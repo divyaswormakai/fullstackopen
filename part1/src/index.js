@@ -8,11 +8,20 @@ const Button = ({handleClick,text})=>{
 }
 
 const Display=({stats})=>{
+  let good = stats[0];
+  let neutral = stats[1];
+  let bad = stats[2];
+  let total = stats.reduce((finalVal,curVal)=>finalVal+curVal);
+  let avg = (good-bad)/total
+  let positive = good/total*100
   return(
     <>
-      <p>Good: {stats[0]}</p>
-      <p>Neutral: {stats[1]}</p>
-      <p>Bad: {stats[2]}</p>
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+      <p>All: {total}</p>
+      <p>Average: {avg}</p>
+      <p>Positive: {positive}%</p>
     </>
   )
 }
