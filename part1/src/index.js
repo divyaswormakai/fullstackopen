@@ -1,69 +1,52 @@
-import React from 'react'
+import React,{useState} from 'react'
 import ReactDOM from 'react-dom'
 
-const Header =(props)=>{
+const Button = ({handleClick,text})=>{
   return(
-    <h1>{props.course.name}</h1>
+    <button onClick={handleClick}>{text}</button>
   )
 }
 
-const Part = (props)=>{
-  console.log(props)
+const Display=({stats})=>{
   return(
     <>
-    <p>{props.part.name}: {props.part.exercises}</p>
+      <p>Good: {stats[0]}</p>
+      <p>Neutral: {stats[1]}</p>
+      <p>Bad: {stats[2]}</p>
     </>
   )
 }
 
-const Content=(props)=>{
-  return(
-    <>
-      {props.course.parts.map((elem,ind)=>{
-        return(
-          <Part part={elem} key={ind}/>
-        )
-      })}
-    </>
-  )
-}
-
-const Total =(props)=>{
-  let total =0
-  props.course.parts.forEach(element=>{
-    total+=element.exercises
-  })
-  return(
-    <p>Number of exercises {total}</p>
-  )
-}
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  const handleGoodClick =()=>{
+    setGood(good+1);
   }
 
+  const handleBadClick =()=>{
+    setBad(bad+1);
+  }
+
+  const handleNeutralClick=()=>{
+    setNeutral(neutral+1);
+  }
   return (
     <div>
-      <Header course= {course}/>
-      <Content course= {course}/>
+      <h1>Give Feedback</h1>
+      <div className="feedback">
+      <Button text={"Good"} handleClick = {handleGoodClick}/>
+      <Button text={"Neutral"} handleClick = {handleNeutralClick}/>
 
-      <Total course= {course}/>
+      <Button text={"Bad"} handleClick = {handleBadClick}/>
+      </div>
+      <h1>Statistics</h1>
+      <div>
+          <Display stats ={[good,neutral,bad]}/>
+      </div>
     </div>
   )
 }
-
 ReactDOM.render(<App />, document.getElementById('root'))
