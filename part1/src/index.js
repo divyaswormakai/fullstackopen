@@ -48,7 +48,7 @@ const HighestAnectode=({anecdotes,points})=>{
   let ind = points.indexOf(Math.max(...points))
   return(
     <div className="MostVoted">
-      <h1>Anectode with most votes</h1>
+      <h1>Anectode with most votes:</h1>
       {anecdotes[ind]}
     </div>
   )
