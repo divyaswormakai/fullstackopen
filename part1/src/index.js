@@ -48,9 +48,10 @@ const App = ({anecdotes}) => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-
-  //1.13
+  //1.10
   const [selected, setSelected] = useState(0);
+  //1.11
+  const [points,setPoints]=useState(Array(anecdotes.length).fill(0))
 
   const handleGoodClick =()=>{
     setGood(good+1);
@@ -66,7 +67,16 @@ const App = ({anecdotes}) => {
 
   const randomAnecdote=()=>{
     let random = Math.floor(Math.random() * anecdotes.length);
-    setSelected(random);
+    setSelected(random);    
+  }
+
+    //
+  const voteAnectode = ()=>{
+    console.log("Increase vote")
+    console.log(points[selected])
+    let temp = [...points]
+    temp[selected]+=1
+    setPoints(temp)
   }
 
   return (
@@ -75,7 +85,6 @@ const App = ({anecdotes}) => {
       <div className="feedback">
       <Button text={"Good"} handleClick = {handleGoodClick}/>
       <Button text={"Neutral"} handleClick = {handleNeutralClick}/>
-
       <Button text={"Bad"} handleClick = {handleBadClick}/>
       </div>
       <h1>Statistics</h1>
@@ -85,7 +94,12 @@ const App = ({anecdotes}) => {
 
       <div className="anecdote">
         {anecdotes[selected]}
+        <br/> 
+        TotalVotes: {points[selected]}
         <br/>
+        <button onClick={voteAnectode}>
+          Vote
+        </button>
         <button onClick={randomAnecdote}>
           Random anecdote
         </button>
