@@ -44,14 +44,22 @@ const Statistics=({stats})=>{
   )
 }
 
+const HighestAnectode=({anecdotes,points})=>{
+  let ind = points.indexOf(Math.max(...points))
+  return(
+    <div className="MostVoted">
+      <h1>Anectode with most votes</h1>
+      {anecdotes[ind]}
+    </div>
+  )
+}
+
 const App = ({anecdotes}) => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  //1.10
   const [selected, setSelected] = useState(0);
-  //1.11
-  const [points,setPoints]=useState(Array(anecdotes.length).fill(0))
+  const [points,setPoints] = useState(Array(anecdotes.length).fill(0))
 
   const handleGoodClick =()=>{
     setGood(good+1);
@@ -70,10 +78,7 @@ const App = ({anecdotes}) => {
     setSelected(random);    
   }
 
-    //
   const voteAnectode = ()=>{
-    console.log("Increase vote")
-    console.log(points[selected])
     let temp = [...points]
     temp[selected]+=1
     setPoints(temp)
@@ -97,13 +102,11 @@ const App = ({anecdotes}) => {
         <br/> 
         TotalVotes: {points[selected]}
         <br/>
-        <button onClick={voteAnectode}>
-          Vote
-        </button>
-        <button onClick={randomAnecdote}>
-          Random anecdote
-        </button>
+        <Button text="Vote" handleClick={voteAnectode}/>
+        <Button text="Random Anectode" handleClick={randomAnecdote}/>
       </div>
+
+      <HighestAnectode anecdotes={anecdotes} points={points}/>
     </div>
   )
 }
