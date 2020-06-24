@@ -14,6 +14,12 @@ const Statistics=({stats})=>{
   let total = stats.reduce((finalVal,curVal)=>finalVal+curVal);
   let avg = (good-bad)/total
   let positive = good/total*100
+
+  if(total ===0){
+    return(
+      <p>No feedback given</p>
+    )
+  }
   return(
     <>
       <p>Good: {good}</p>
