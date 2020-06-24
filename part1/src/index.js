@@ -7,7 +7,7 @@ const Button = ({handleClick,text})=>{
   )
 }
 
-const Display=({stats})=>{
+const Statistics=({stats})=>{
   let good = stats[0];
   let neutral = stats[1];
   let bad = stats[2];
@@ -53,7 +53,7 @@ const App = () => {
       </div>
       <h1>Statistics</h1>
       <div>
-          <Display stats ={[good,neutral,bad]}/>
+          <Statistics stats ={[good,neutral,bad]}/>
       </div>
     </div>
   )
