@@ -3,7 +3,7 @@ import Part from './Part'
 
 const Header = ({ header }) => {
   return (
-    <h1>{header}</h1>
+    <h2>{header}</h2>
   )
 }
 
