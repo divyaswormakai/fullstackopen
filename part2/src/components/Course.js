@@ -14,8 +14,8 @@ const Content = ({contents})=>{
 }
 
 const Accumulative=({contents})=>{
-  let final =0
-  contents.map((content)=>final+=content.exercises)
+  //0 is very very essential
+  let final = contents.reduce((acc,curr,contents)=>acc+curr.exercises,0)
   return(
     <p><b>total of {final} exercises</b></p>
   )
