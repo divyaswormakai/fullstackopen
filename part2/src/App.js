@@ -14,7 +14,15 @@ const App = () => {
   const saveName =(ev)=>{
       ev.preventDefault();
       let newObj = {name: newName}
-      setPersons(persons.concat(newObj))
+      let objs = persons.filter(person => person.name === newName)
+      console.log(objs)
+      if (objs.length > 0){
+        alert(`${newName} already exists.`)
+         
+      }
+      else{
+        setPersons(persons.concat(newObj))
+      }
   }
 
   return (

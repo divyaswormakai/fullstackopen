@@ -4,7 +4,7 @@ import SingleNumber from './SingleNumber';
 const Numbers =({numbers})=>{
     return(
         <>
-            {numbers.map((num)=> <SingleNumber key={num} number={num}/>)}
+            {numbers.map((num)=> <SingleNumber key={"Num"+num.name} number={num}/>)}
         </>
     )
 }
