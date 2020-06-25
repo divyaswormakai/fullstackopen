@@ -13,11 +13,20 @@ const Content = ({contents})=>{
   })
 }
 
+const Accumulative=({contents})=>{
+  let final =0
+  contents.map((content)=>final+=content.exercises)
+  return(
+    <p><b>total of {final} exercises</b></p>
+  )
+}
+
 const Course = ({ course }) => {
   return (
     <>
       <Header header={course.name} />
       <Content contents ={course.parts}/>
+      <Accumulative contents={course.parts}/>
     </>
   )
 }
