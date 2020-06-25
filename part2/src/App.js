@@ -3,22 +3,28 @@ import Numbers from './components/Numbers'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '123456789' }
   ]) 
   const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
 
   const handleNameChange =(ev)=>{
-      setNewName(ev.target.value)
+    setNewName(ev.target.value)
+  }
+
+  const handleNumberChange=(ev)=>{
+    if(ev.target.value.length >0){
+      setNewNumber(ev.target.value)
+    }
   }
 
   const saveName =(ev)=>{
       ev.preventDefault();
-      let newObj = {name: newName}
-      let objs = persons.filter(person => person.name === newName)
+      let newObj = {name: newName, number: newNumber}
+      let objs = persons.filter(person => person.name === newName || person.number === newNumber)
       console.log(objs)
       if (objs.length > 0){
-        alert(`${newName} already exists.`)
-         
+        alert(`${newName} already exists.`)  
       }
       else{
         setPersons(persons.concat(newObj))
@@ -30,10 +36,15 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={saveName}>
         <div>
-          name: <input onChange={handleNameChange} value={newName}/>
+          Name: <input onChange={handleNameChange} value={newName}/>
         </div>
+        <br/>
         <div>
-          <button type="submit">add</button>
+          Number: <input onChange={handleNumberChange} value={newNumber} type="number"/>
+        </div>
+        <br/>
+        <div>
+          <button type="submit">ADD</button>
         </div>
       </form>
       <h2>Numbers</h2>
