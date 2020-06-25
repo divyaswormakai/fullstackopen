@@ -6,6 +6,16 @@ const HeaderHome = ({ header }) => {
       <h2>{header}</h2>
     )
   }
+
+const Courses = ({courses})=>{
+    return courses.map((course,indx)=>{
+        return(
+            <div key={"course"+indx}>
+                <Course course={course}/>
+            </div>
+        )
+    })
+}
 const App = () => {
     const courses = [
         {
@@ -55,13 +65,7 @@ const App = () => {
     return(
         <>
             <HeaderHome header={"Web Development Curriculum"} />
-            {courses.map((course,indx)=>{
-                return(
-                    <div key={"course"+indx}>
-                        <Course course={course}/>
-                    </div>
-                )
-            })}
+            <Courses courses={courses}/>
         </>
     )
 }
