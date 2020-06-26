@@ -10,6 +10,8 @@ function App() {
   const [filter, setFilter] = useState('')
 
   const[countryDetails, setCountryDetails] = useState({})
+  const[weatherDetails, setWeatherDetails] = useState({})
+  const [weatherLoaded, setWeatherLoaded] = useState(false)
 
   useEffect(()=>{
     axios
@@ -18,6 +20,7 @@ function App() {
       setCountries(response.data)
       console.log(response.data.length)
     })
+    console.log(process.env.REACT_APP_WEATHER_API)
   },[])
 
   const handleFilterChange=(ev)=>{
@@ -52,8 +55,15 @@ function App() {
   }
 
   const HandleSetCountryDetails=(elem)=>{
-    console.log(elem)
     setCountryDetails(elem)
+    const api_key = '539b1e19a22a0b6c504e635c725ace66'
+    const url = `http://api.weatherstack.com/current?access_key=${api_key}&query=${elem.name}`
+    axios
+    .get(url)
+    .then(res=>{
+      setWeatherDetails(res.data)
+      setWeatherLoaded(true)
+    })
   }
 
   return (
@@ -106,11 +116,19 @@ function App() {
         <h3>Languages</h3>
         <ul>
           {countryDetails.languages.map(lang=>{
-            return(<li>{lang.name}</li>)
+            return(<li key={countryDetails.name+lang.name}>{lang.name}</li>)
           })}
         </ul>
-        <img src={countryDetails.flag} alt="flag" width="100" height="100"/>
-      </div>
+        {weatherLoaded?(
+          <>
+            <img src={countryDetails.flag} alt="flag" width="100" height="100"/>
+            <h3>Weather in {weatherDetails.location.name}</h3>
+            <p><b>Temperature: {weatherDetails.current.temperature} Celsius</b></p>
+            <img src={weatherDetails.current.weather_icons[0]} alt="flag" width="75" height="75"/>
+            <p><b>wind:</b> {weatherDetails.current.wind_speed} mph direction {weatherDetails.current.wind_dir} </p>
+          
+          </>):null}
+          </div>
       ):null}
     </div>
 
