@@ -15,6 +15,13 @@ const createNumber = (newObj)=>{
 const deleteNumber = (obj)=>{
     const delUrl = baseUrl+`/${obj.id}`
     const req = axios.delete(delUrl)
-    return req.then(res=>console.log(res.data)).catch(err=>console.log(err))
+    return req.then(res=>res.data).catch(err=>console.log(err))
 }
-export default {getAll, createNumber, deleteNumber}
+
+const updateNumber = (obj)=>{
+    const putUrl = baseUrl+`/${obj.id}`
+    const req = axios.put(putUrl,obj)
+    return req.then(res=>res.data).catch(err=> console.log(err))
+}
+
+export default {getAll, createNumber, deleteNumber, updateNumber}

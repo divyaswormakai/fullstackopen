@@ -13,15 +13,15 @@ const App = () => {
   const [personToShow, setPersonToShow] = useState([])
 
   useEffect(()=>{
-    PhoneService.getAll()
-      .then(data=>{
-        SetData(data)
-      })
+    SetData()
   },[])
 
-  const SetData=(data)=>{
-    setPersons(data)
-    setPersonToShow(data)
+  const SetData=()=>{
+    PhoneService.getAll()
+      .then(data=>{
+        setPersons(data)
+        setPersonToShow(data)
+      })
   }
 
   const filterNames =(val)=>{
@@ -53,10 +53,7 @@ const App = () => {
   const deleteNumber=(obj)=>{
     if(window.confirm(`Delete ${obj.name}?`)){
       PhoneService.deleteNumber(obj).then((res)=>{
-        PhoneService.getAll()
-            .then(data=>{
-              SetData(data)
-            })
+        SetData()
       })
     }
     
@@ -67,14 +64,14 @@ const App = () => {
       let newObj = {name: newName, number: newNumber}
       let objs = persons.filter(person => person.name === newName || person.number === newNumber)
       if (objs.length > 0){
-        alert(`${newName} already exists.`)  
+        newObj = {id: objs[0].id, name: newName, number: newNumber}
+        PhoneService.updateNumber(newObj).then(res=>{
+          SetData()
+        })
       }
       else{
         PhoneService.createNumber(newObj).then(res=>{
-          PhoneService.getAll()
-          .then(data=>{
-            SetData(data)
-          })
+          SetData()
         })
 
       }
