@@ -1,0 +1,29 @@
+.success{
+    width:100vw;
+    padding:10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(27, 207, 27) ;
+    border-width: 5px;
+    background-color: gray;
+}
+
+.danger{
+    width:100vw;
+    padding:10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(228, 35, 35) ;
+    border-width: 5px;
+    background-color: gray;
+}
+
+.info{
+    width:100vw;
+    padding:10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(47, 62, 190) ;
+    border-width: 5px;
+    background-color: gray;
+}
