@@ -2,7 +2,8 @@ import React, { useState,useEffect } from 'react'
 import Numbers from './components/Numbers'
 import Phonebook from './components/PhoneBook'
 import AddForm from './components/AddForm'
-import axios from 'axios'
+
+import PhoneService from './services/PhoneServices'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -12,12 +13,10 @@ const App = () => {
   const [personToShow, setPersonToShow] = useState([])
 
   useEffect(()=>{
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response)=>{
-        console.log("Fetched data")
-        setPersons(response.data)
-        setPersonToShow(response.data)
+    PhoneService.getAll()
+      .then(data=>{
+        setPersons(data)
+        setPersonToShow(data)
       })
   },[])
 
@@ -25,7 +24,6 @@ const App = () => {
     console.log("FilterN Names:",val)
     if (val.length>0 || filter !== ''){
       let objs = persons.filter(person => person.name.includes(val))
-      console.log(objs)
       setPersonToShow(objs)
     }
     else{
@@ -56,18 +54,14 @@ const App = () => {
         alert(`${newName} already exists.`)  
       }
       else{
-        const temp = persons.concat(newObj)
-        setPersons(temp)
-        setFilter('')
-        setPersonToShow(temp)
-        axios
-          .post('http://localhost:3001/persons',newObj)
-          .then(res=>{
-            console.log(res.data)
+        PhoneService.createNumber(newObj).then(res=>{
+          PhoneService.getAll()
+          .then(data=>{
+            setPersons(data)
+            setPersonToShow(data)
           })
-          .catch(err=>{
-            console.log(err)
-          })
+        })
+
       }
   }
 
@@ -75,7 +69,9 @@ const App = () => {
     <div>
       <Phonebook saveName={saveName} handleFilterChange={handleFilterChange} filter={filter}/>
       <AddForm saveName= {saveName} handleNameChange= {handleNameChange} newName={newName} handleNumberChange={handleNumberChange} newNumber={newNumber}/>
-      <Numbers numbers = {personToShow}/>
+      {personToShow.length>0?(
+       <Numbers numbers = {personToShow}/>
+      ):null}
     </div>
   )
 }
