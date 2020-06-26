@@ -15,10 +15,14 @@ const App = () => {
   useEffect(()=>{
     PhoneService.getAll()
       .then(data=>{
-        setPersons(data)
-        setPersonToShow(data)
+        SetData(data)
       })
   },[])
+
+  const SetData=(data)=>{
+    setPersons(data)
+    setPersonToShow(data)
+  }
 
   const filterNames =(val)=>{
     console.log("FilterN Names:",val)
@@ -46,6 +50,18 @@ const App = () => {
     filterNames(ev.target.value)
   }
 
+  const deleteNumber=(obj)=>{
+    if(window.confirm(`Delete ${obj.name}?`)){
+      PhoneService.deleteNumber(obj).then((res)=>{
+        PhoneService.getAll()
+            .then(data=>{
+              SetData(data)
+            })
+      })
+    }
+    
+  }
+
   const saveName =(ev)=>{
       ev.preventDefault();
       let newObj = {name: newName, number: newNumber}
@@ -57,8 +73,7 @@ const App = () => {
         PhoneService.createNumber(newObj).then(res=>{
           PhoneService.getAll()
           .then(data=>{
-            setPersons(data)
-            setPersonToShow(data)
+            SetData(data)
           })
         })
 
@@ -70,7 +85,7 @@ const App = () => {
       <Phonebook saveName={saveName} handleFilterChange={handleFilterChange} filter={filter}/>
       <AddForm saveName= {saveName} handleNameChange= {handleNameChange} newName={newName} handleNumberChange={handleNumberChange} newNumber={newNumber}/>
       {personToShow.length>0?(
-       <Numbers numbers = {personToShow}/>
+       <Numbers numbers = {personToShow} deleteNumber={deleteNumber}/>
       ):null}
     </div>
   )
