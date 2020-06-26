@@ -6,7 +6,10 @@ function App() {
   const [countries, setCountries] = useState([])
   const [toShowList, setToShowList] = useState([])
   const [singleCountry, setSingleCountryStatus] = useState({})
+  const [toShowListAble, settoShowListAble] = useState(false)
   const [filter, setFilter] = useState('')
+
+  const[countryDetails, setCountryDetails] = useState({})
 
   useEffect(()=>{
     axios
@@ -19,15 +22,17 @@ function App() {
 
   const handleFilterChange=(ev)=>{
     setFilter(ev.target.value)
-
+    setCountryDetails({})
     if(ev.target.value === '' || ev.target.value.length <=0){
       setToShowList([{name: ''}])
+      
     }
     else{
-      const objs = countries.filter(elem=>elem.name.includes(ev.target.value))
+      const objs = countries.filter(elem=>elem.name.toLowerCase().includes(ev.target.value.toLowerCase()))
       if(objs.length ===0){
         setToShowList([{name: 'No country found'}])
         setSingleCountryStatus({})
+        settoShowListAble(false)
       }
       else if(objs.length ===1){
         setSingleCountryStatus(objs[0])
@@ -36,12 +41,19 @@ function App() {
       else if(objs.length >=10){
         setToShowList([{name: 'Too many matches, specify another filter'}])
         setSingleCountryStatus({})
+        settoShowListAble(false)
       }
       else{
         setToShowList(objs)
         setSingleCountryStatus({})
+        settoShowListAble(true)
       }
     }
+  }
+
+  const HandleSetCountryDetails=(elem)=>{
+    console.log(elem)
+    setCountryDetails(elem)
   }
 
   return (
@@ -63,13 +75,43 @@ function App() {
         </div>
       ):(
         <div>
-          {toShowList.map(elem=>{
-            return(
-              <p>{elem.name}</p>
-            )
-          })}
+          {toShowListAble?
+            toShowList.map(elem=>{
+              return(
+                <div key={elem.name}>
+                  <p>
+                    {elem.name}&nbsp;
+                    <button onClick={()=>HandleSetCountryDetails(elem)}>Show</button>
+                  </p>
+                  
+                </div>
+              )
+            }):
+            toShowList.map(elem=>{
+              return(
+                <div key={elem.name}>
+                  <p>{elem.name}</p>
+                </div>
+              )
+          })
+          }
         </div>
       )}
+
+      {countryDetails.hasOwnProperty('name')?(
+        <div className="countryStats" >
+        <h1>{countryDetails.name}</h1>
+        <p>Capital: {countryDetails.capital}</p>
+        <p>Population: {countryDetails.population}</p>
+        <h3>Languages</h3>
+        <ul>
+          {countryDetails.languages.map(lang=>{
+            return(<li>{lang.name}</li>)
+          })}
+        </ul>
+        <img src={countryDetails.flag} alt="flag" width="100" height="100"/>
+      </div>
+      ):null}
     </div>
 
   );
