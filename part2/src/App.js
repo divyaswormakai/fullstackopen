@@ -60,7 +60,14 @@ const App = () => {
         setPersons(temp)
         setFilter('')
         setPersonToShow(temp)
-
+        axios
+          .post('http://localhost:3001/persons',newObj)
+          .then(res=>{
+            console.log(res.data)
+          })
+          .catch(err=>{
+            console.log(err)
+          })
       }
   }
 
