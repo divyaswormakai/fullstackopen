@@ -53,6 +53,15 @@ let persons = [
       }
   })
 
+  app.delete('/api/persons/:id',(req,res)=>{
+      const id = req.params.id
+      console.log(id)
+      let newPersons = persons.filter((person=>person.id!=id))
+      console.log("New List:",newPersons)
+      persons = newPersons
+      res.status(204).end()
+  })
+
   
   const PORT = 3001
   app.listen(PORT, () => {
