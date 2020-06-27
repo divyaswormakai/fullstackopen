@@ -64,10 +64,23 @@ let persons = [
 
   app.post('/api/persons', (req,res)=>{
       const body = req.body
-      const id = Math.floor(Math.random()*100000)
-      body.id = id
-      persons = persons.concat(body)
-      res.status(204).end()
+      let objs = persons.filter(person=>person.name===body.name || person.number === body.number)
+      if(body.name === '' || body.number===''){
+        res.status(501).send({
+            error:'Please fill the details of number and name'
+        })
+      }
+      else if(objs.length>0){
+        res.status(501).send({
+            error:'The name/number already exists'
+        })
+      }
+      else{
+        const id = Math.floor(Math.random()*100000)
+        body.id = id
+        persons = persons.concat(body)
+        res.status(204).end()
+      }
   })
   
   const PORT = 3001
