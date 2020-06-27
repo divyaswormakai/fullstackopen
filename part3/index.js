@@ -41,6 +41,18 @@ let persons = [
     res.send(`<div><p>${personInfo}</p><p>${date}</p></div>`)
   })
 
+  app.get('/api/persons/:id',(req,res)=>{
+      const id = req.params.id
+      
+    let personList = persons.find(person => person.id==id)
+      if(personList){
+          res.json(personList)
+      }
+      else{
+          res.status(404).end()
+      }
+  })
+
   
   const PORT = 3001
   app.listen(PORT, () => {
