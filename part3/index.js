@@ -3,7 +3,12 @@ const morgan = require('morgan')
 
 const app = express()
 app.use(express.json())
-app.use(morgan('tiny'))
+
+morgan.token('body', function getBody(req){
+    return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :response-time - :body'))
 
 let persons = [
     {
@@ -80,8 +85,8 @@ let persons = [
       else{
         const id = Math.floor(Math.random()*100000)
         body.id = id
-        persons = persons.concat(body)
-        res.status(204).end()
+        persons = persons.concat(body.id)
+        res.status(200).send(body)
       }
   })
     
