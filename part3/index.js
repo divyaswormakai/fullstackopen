@@ -62,6 +62,13 @@ let persons = [
       res.status(204).end()
   })
 
+  app.post('/api/persons', (req,res)=>{
+      const body = req.body
+      const id = Math.floor(Math.random()*100000)
+      body.id = id
+      persons = persons.concat(body)
+      res.status(204).end()
+  })
   
   const PORT = 3001
   app.listen(PORT, () => {
