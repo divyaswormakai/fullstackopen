@@ -24,6 +24,7 @@ const App = () => {
         setPersons(data)
         setPersonToShow(data)
         NotificationTimeOut()
+        console.log(data)
       })
   }
 

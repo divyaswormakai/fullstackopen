@@ -1,8 +1,11 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 
 const app = express()
+app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 
 morgan.token('body', function getBody(req){
     return JSON.stringify(req.body)
@@ -71,6 +74,7 @@ let persons = [
 
   app.post('/api/persons', (req,res)=>{
       const body = req.body
+      console.log(body)
       let objs = persons.filter(person=>person.name===body.name || person.number === body.number)
       if(body.name === '' || body.number===''){
         res.status(501).send({
@@ -85,7 +89,7 @@ let persons = [
       else{
         const id = Math.floor(Math.random()*100000)
         body.id = id
-        persons = persons.concat(body.id)
+        persons = persons.concat(body)
         res.status(200).send(body)
       }
   })
@@ -94,7 +98,7 @@ let persons = [
       res.status(404).send({error:'unknown endpoint'})
   }
 
-  const PORT = 3001
+  const PORT = process.env.PORT || 3001
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })

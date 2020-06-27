@@ -1,16 +1,22 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const getAll =()=>{
     const req =axios.get(baseUrl)
-    return req.then(res=>res.data).catch(err=>console.log(err))
+    return req.then(res=>{
+        console.log(res.data)
+        return res.data
+    }).catch(err=>console.log(err))
 }
 
 const createNumber = (newObj,setNotification)=>{
+    console.log(newObj)
     const req = axios.post(baseUrl, newObj)
+    //should return the new object that was created
     return req.then(res=>{
         setNotification(`${newObj.name} has been added successfully`)
+        console.log(res.data)
         return res.data
     }).catch(err=>console.log(err))
 }
