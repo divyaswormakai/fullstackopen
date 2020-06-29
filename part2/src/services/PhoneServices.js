@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/api/persons'
-// const baseUrl = 'https://fullstackopen-test-makai.herokuapp.com/api/persons'
+// const baseUrl = 'http://localhost:3001/api/persons'
+const baseUrl = 'https://fullstackopen-test-makai.herokuapp.com/api/persons'
 
 const getAll =()=>{
     const req =axios.get(baseUrl)
@@ -19,7 +19,11 @@ const createNumber = (newObj,setNotification)=>{
         setNotification(`${newObj.name} has been added successfully`)
         console.log(res.data)
         return res.data
-    }).catch(err=>console.log(err))
+    })
+    .catch(err=>{
+        console.log(err.response.data.error)
+        setNotification(err.response.data.error)
+    })
 }
 
 const deleteNumber = (obj, setNotification)=>{

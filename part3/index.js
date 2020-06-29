@@ -27,6 +27,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err)=>console.log("Could not connect to Database:\n"+err))
 
   mongoose.set('useFindAndModify', false)
+  mongoose.set('useCreateIndex', true);
 
   app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
@@ -99,7 +100,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
       })
   })
 
-  app.post('/api/persons', (req,res)=>{
+  app.post('/api/persons', (req,res,next)=>{
       const body = req.body
       console.log(body)
 
@@ -113,7 +114,13 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
       }
       else{
         const newContact = new Contact({name:body.name,number:body.number})
-        newContact.save().then(savedNumber => res.json(savedNumber))
+        newContact.save()
+        .then(savedNumber => savedNumber.toJSON())
+        .then(formattedNumber =>res.json(formattedNumber))
+        .catch(err=>{
+          // console.log(err)
+          next(err)
+        })
       }
   })
 

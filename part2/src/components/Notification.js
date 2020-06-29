@@ -5,21 +5,21 @@ const Notification =({notification})=>{
     if(notification.includes('added')){
         return(
             <div className="success">
-                "Added portion"
+                {notification}
             </div>
         )
     }
-    else if(notification.includes('deleted')){
+    else if(notification.includes('deleted') ||  notification.includes('failed')){
         return(
             <div className="danger">
-                "Deleted portion"
+                {notification}
             </div>
         )
     }
     else if(notification.includes('updated')){
         return(
             <div className="info">
-                "Updated portion"
+                {notification}
             </div>
         )
     }

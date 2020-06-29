@@ -1,8 +1,18 @@
 const mongoose = require('mongoose')
+var uniqueValidator = require('mongoose-unique-validator');
 
 const contactSchema = new mongoose.Schema({
-  name: String,
-  number: Number,
+  name: { 
+    type:String,
+    minlength: 3,
+    required:true,
+    unique: true
+  },
+  number: {
+    type:Number,
+    min: 9999999,
+    required:true,
+  }
 })
 
 contactSchema.set('toJSON',{
@@ -13,4 +23,5 @@ contactSchema.set('toJSON',{
   }
 })
 
+contactSchema.plugin(uniqueValidator)
 module.exports = mongoose.model('Contact', contactSchema)
