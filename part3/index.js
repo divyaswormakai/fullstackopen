@@ -7,11 +7,12 @@ const mongoose  = require('mongoose')
 const app = express()
 app.use(cors())
 app.use(express.json())
+// app.use(logger)
 app.use(express.static('build'))
 
 const Contact = require('./models/contacts.model')
 const { response } = require('express')
-
+const {unknownEndPont,errorHandler} = require('./middleware/errohandler')
 //middleware
 morgan.token('body', function getBody(req){
     return JSON.stringify(req.body)
@@ -25,6 +26,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((res)=> console.log("Connected to Database!!!"))
   .catch((err)=>console.log("Could not connect to Database:\n"+err))
 
+  mongoose.set('useFindAndModify', false)
 
   app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
@@ -49,22 +51,45 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     res.send(`<div><p>${personInfo}</p><p>${date}</p></div>`)
   })
 
-  app.get('/api/persons/:id',(req,res)=>{
+  app.get('/api/persons/:id',(req,res,next)=>{
     const id = req.params.id
-    Contact.findById(id).then(contact=>{
-      if(contact.length===0){
-        res.status(200).send({msg:'No contact found'})
-      }
-      else{
+    Contact.findById(id)
+    .then(contact=>{
+      if(contact){
         res.json(contact)
+      }else{
+        res.status(404).end()
       }
+      }
+    )
+    .catch(err=>{
+      next(err)
     })
+  })
+
+  app.put('/api/persons/:id',(req,res,next)=>{
+    const body = req.body
+    const id = req.params.id
+    const contact = new Contact({
+      name:body.name,
+      number:body.number
+    })
+    delete contact._id
+    contact._id = id
+    
+    console.log(`Contact: ${contact}`)
+    Contact.findByIdAndUpdate(id, contact, {new:true})
+    .then(updatedContact=>{
+      console.log("UPDATED")
+      res.json(updatedContact)
+    })
+    .catch(err=>next(err))
   })
 
   app.delete('/api/persons/:id',(req,res)=>{
       const id = req.params.id
       Contact.findByIdAndDelete(id).then(result=>{
-        res.status(204).end()
+        res.status(204).send({error: 'malformatted id'})
       })
   })
 
@@ -85,10 +110,10 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         newContact.save().then(savedNumber => res.json(savedNumber))
       }
   })
-    
-  const unknownEndPont = (req,res)=>{
-      res.status(404).send({error:'unknown endpoint'})
-  }
+
+  //using middlewares
+  app.use(unknownEndPont)
+  app.use(errorHandler)
 
   const PORT = process.env.PORT || 3001
   app.listen(PORT, () => {
