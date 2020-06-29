@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const baseUrl = 'http://localhost:3001/api/persons'
-const baseUrl = 'https://fullstackopen-test-makai.herokuapp.com/api/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
+// const baseUrl = 'https://fullstackopen-test-makai.herokuapp.com/api/persons'
 
 const getAll =()=>{
     const req =axios.get(baseUrl)
