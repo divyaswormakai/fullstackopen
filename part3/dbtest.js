@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
@@ -20,27 +21,27 @@ const contactSchema = new mongoose.Schema({
 const Contact = mongoose.model('Contact', contactSchema)
 
 if(process.argv.length ===3){
-    //show the password
-    console.log("No args finding numbers")
-    Contact.find({}).then(res=>{
-        console.log("Phonebook:")
-        res.forEach(elem=>{
-            console.log(`${elem.name}: ${elem.number}`)
-        })
-        mongoose.connection.close()
+  //show the password
+  console.log('No args finding numbers')
+  Contact.find({}).then(res => {
+    console.log('Phonebook:')
+    res.forEach(elem => {
+      console.log(`${elem.name}: ${elem.number}`)
     })
+    mongoose.connection.close()
+  })
 }
 else{
-    //save the data
-    console.log("Args found saving number")
-    const number = new Contact({
-        name: process.argv[3],
-        number: parseInt(process.argv[4])
-      })
-    console.log(number)
-    number.save().then(result => {
-        console.log(`added ${number.name} number ${number.number} to phonebook`)
-        mongoose.connection.close()
-    })
+  //save the data
+  console.log('Args found saving number')
+  const number = new Contact({
+    name: process.argv[3],
+    number: parseInt(process.argv[4])
+  })
+  console.log(number)
+  number.save().then(() => {
+    console.log(`added ${number.name} number ${number.number} to phonebook`)
+    mongoose.connection.close()
+  })
 }
 

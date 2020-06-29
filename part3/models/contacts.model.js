@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-var uniqueValidator = require('mongoose-unique-validator');
+const uniqueValidator = require('mongoose-unique-validator')
 
 const contactSchema = new mongoose.Schema({
-  name: { 
+  name: {
     type:String,
     minlength: 3,
     required:true,
