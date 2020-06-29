@@ -45,10 +45,16 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   })
 
   app.get('/api/info',(req,res)=>{
-    const personInfo =`Persons has info for ${persons.length} people.`
-    const date = new Date()
-
-    res.send(`<div><p>${personInfo}</p><p>${date}</p></div>`)
+    const date= new Date()
+    Contact.countDocuments({})
+    .then(result=>{
+      console.log(result)
+      res.json({msg:`Phonebook has ${result} contacts in ${date}`})
+    })
+    .catch(err=>{
+      console.log(err)
+      res.status(404).end()
+    })
   })
 
   app.get('/api/persons/:id',(req,res,next)=>{
