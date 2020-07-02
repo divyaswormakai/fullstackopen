@@ -59,10 +59,32 @@ const mostBlogsLodash = (blogs) => {
   };
 };
 
+const mostLikes = (blogs) => {
+  let authorsCountObj = [];
+  blogs.map((blog) => {
+    let list = authorsCountObj.filter((obj) => obj.author == blog.author);
+    if (list.length === 0) {
+      //add the author
+      authorsCountObj.push({ author: blog.author, likes: blog.likes });
+    } else {
+      //add 1 to author blogs
+      list[0].likes += blog.likes;
+    }
+  });
+  console.log(authorsCountObj);
+  //find the maximum blog writer
+
+  let maxWriter = authorsCountObj.reduce((max, writerDetails) =>
+    max.likes > writerDetails.likes ? max : writerDetails
+  );
+  return maxWriter;
+};
+
 module.exports = {
   dummy,
   likeCount,
   favoutireBlog,
   mostBlogs,
   mostBlogsLodash,
+  mostLikes,
 };
