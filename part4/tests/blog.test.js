@@ -1,4 +1,3 @@
-const dummy = require('../utils/list_helper');
 const list_helper = require('../utils/list_helper');
 
 describe('dummy run', () => {
@@ -26,6 +25,24 @@ describe('fvaourite blog', () => {
       likes: 12,
     };
     expect(result).toEqual(expected);
+  });
+});
+
+describe('most blogs', () => {
+  test('most blogs', () => {
+    const result = list_helper.mostBlogs(blogs);
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    });
+  });
+
+  test('most blogs with library', () => {
+    const result = list_helper.mostBlogsLodash(blogs);
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    });
   });
 });
 
