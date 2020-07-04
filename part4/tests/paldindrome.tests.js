@@ -1,5 +1,5 @@
 const palindrome = require('../utils/for_testing').palindrome;
-
+//change name to test.js then the test will run
 test('palindrome of a', () => {
   const result = palindrome('a');
   expect(result).toBe('a');
