@@ -3,6 +3,8 @@ const supertest = require('supertest');
 const logger = require('../utils/logger');
 const app = require('../app');
 const Blog = require('../models/blog.model');
+const { response } = require('express');
+const { post } = require('../app');
 
 const api = supertest(app);
 
@@ -40,8 +42,20 @@ describe('all about post method', () => {
     const response = await api.get('/api/blogs');
 
     expect(response.body).toHaveLength(dummyData.length + 1);
-
     expect(postData).toEqual(postData);
+  });
+
+  test('Post method with likes set default to 0', async () => {
+    const postedData = await api
+      .post('/api/blogs')
+      .send(likePostData)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+    let tempData = likePostData;
+    tempData.likes = 0;
+    delete postedData.body.id;
+    console.log(postedData.body);
+    expect(postedData.body).toEqual(tempData);
   });
 });
 
@@ -65,6 +79,12 @@ const postData = {
   author: 'Poster',
   url: 'http://www.divyaswormakai.com.np',
   likes: 0,
+};
+
+const likePostData = {
+  title: 'This has like field absent',
+  author: 'Poster',
+  url: 'http://www.divyaswormakai.com.np',
 };
 
 // test('length of blogs be 2', async () => {
