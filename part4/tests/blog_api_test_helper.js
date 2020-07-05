@@ -28,8 +28,20 @@ const likePostData = {
   url: 'http://www.divyaswormakai.com.np',
 };
 
+const noTitleData = {
+  author: 'Poster with no title',
+  url: 'http://www.divyaswormakai.com.np',
+};
+
+const noUrlData = {
+  title: 'No url data',
+  author: 'Poster',
+};
+
 module.exports = {
   dummyData,
   postData,
   likePostData,
+  noTitleData,
+  noUrlData,
 };
