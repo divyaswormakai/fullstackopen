@@ -38,10 +38,18 @@ const noUrlData = {
   author: 'Poster',
 };
 
+const updateBlog = {
+  title: 'Blog that will beupdated',
+  author: 'Updater',
+  url: 'http://www.divyaswormakai.com.np',
+  likes: 6699,
+};
+
 module.exports = {
   dummyData,
   postData,
   likePostData,
   noTitleData,
   noUrlData,
+  updateBlog,
 };

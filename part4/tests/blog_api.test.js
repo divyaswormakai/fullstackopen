@@ -14,18 +14,26 @@ beforeEach(async () => {
   let tempData2 = new Blog(helper.dummyData[1]);
   await tempData2.save();
 });
+describe('Initial get requests', () => {
+  test('notes are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+  });
 
-test('notes are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/);
-});
+  test('toJSON has changed _id to id', async () => {
+    const response = await api.get('/api/blogs');
+    //check if the property is defined
+    expect(response.body[0].id).toBeDefined();
+  });
 
-test('toJSON has changed _id to id', async () => {
-  const response = await api.get('/api/blogs');
-  //check if the property is defined
-  expect(response.body[0].id).toBeDefined();
+  test('title checking', async () => {
+    const response = await api.get('/api/blogs');
+    let titles = response.body.map((data) => data.title);
+    //check if the property is defined
+    expect(titles).toContain('Blog title 2');
+  });
 });
 
 describe('all about post method', () => {
@@ -65,11 +73,30 @@ describe('all about post method', () => {
   });
 });
 
-test('title checking', async () => {
-  const response = await api.get('/api/blogs');
-  let titles = response.body.map((data) => data.title);
-  //check if the property is defined
-  expect(titles).toContain('Blog title 2');
+describe('dealing with single blog resource', () => {
+  test('For deleting a single resource', async () => {
+    const blogs = await api.get('/api/blogs');
+    const firstID = blogs.body[0].id;
+
+    const deletedMsg = await api
+      .delete(`/api/blogs/delete/${firstID}`)
+      .expect(201);
+  });
+
+  test('For updating a single resource', async () => {
+    const blogs = await api.get('/api/blogs');
+    const firstID = blogs.body[0].id;
+
+    const updatedObject = await api
+      .put(`/api/blogs/update/${firstID}`)
+      .send(helper.updateBlog)
+      .expect(201);
+
+    let tempObj = updatedObject.body;
+    delete tempObj.id;
+
+    expect(tempObj).toEqual(helper.updateBlog);
+  });
 });
 
 afterAll(() => {
