@@ -16,6 +16,9 @@ userRouter.post('/', async (req, res) => {
     const body = req.body;
     console.log(body);
 
+    if (body.password.length <= 3) {
+      res.status(400).send({ error: 'Password length not enough' });
+    }
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
