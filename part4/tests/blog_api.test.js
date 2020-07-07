@@ -37,10 +37,12 @@ describe('Initial get requests', () => {
 });
 
 describe('all about post method', () => {
+  //token works for only a few as of now
   test('POST method working', async () => {
     const postedData = await api
       .post('/api/blogs')
       .send(helper.postData)
+      .set({ Authorization: process.env.TOKEN })
       .expect(201)
       .expect('Content-Type', /application\/json/);
 
@@ -56,6 +58,7 @@ describe('all about post method', () => {
     const postedData = await api
       .post('/api/blogs')
       .send(helper.likePostData)
+      .set({ Authorization: process.env.TOKEN })
       .expect(201)
       .expect('Content-Type', /application\/json/);
     let tempData = helper.likePostData;
@@ -65,11 +68,19 @@ describe('all about post method', () => {
   });
 
   test('Post method for missing title', async () => {
-    await api.post('/api/blogs').send(helper.noTitleData).expect(404);
+    await api
+      .post('/api/blogs')
+      .send(helper.noTitleData)
+      .set({ Authorization: process.env.TOKEN })
+      .expect(404);
   });
 
   test('Post method for missing url', async () => {
-    await api.post('/api/blogs').send(helper.noUrlData).expect(404);
+    await api
+      .post('/api/blogs')
+      .send(helper.noUrlData)
+      .set({ Authorization: process.env.TOKEN })
+      .expect(404);
   });
 });
 
@@ -80,6 +91,7 @@ describe('dealing with single blog resource', () => {
 
     const deletedMsg = await api
       .delete(`/api/blogs/delete/${firstID}`)
+      .set({ Authorization: process.env.TOKEN })
       .expect(201);
   });
 
