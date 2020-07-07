@@ -2,6 +2,7 @@ const blogRouter = require('express').Router();
 const Blog = require('../models/blog.model');
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+const logger = require('../utils/logger');
 
 blogRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -54,8 +55,23 @@ blogRouter.get('/:id', async (req, res) => {
 blogRouter.delete('/delete/:id', async (req, res) => {
   const id = req.params.id;
   try {
-    await Blog.findByIdAndDelete(id);
-    res.status(201).json({ message: 'Deleted' });
+    const token = req.token;
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken.id) {
+      return res.status(401).json({ error: 'Token missing/invalid' });
+    }
+    //decodedToken.id is the user_id saved by token
+
+    const blog = await Blog.findById(id);
+    if (blog.user.toString() === decodedToken.id.toString()) {
+      await Blog.findByIdAndDelete(id);
+      res.status(201).json({ message: 'Deleted' });
+    } else {
+      res
+        .status(400)
+        .json({ error: 'Could not match the user. Invalid Access' });
+    }
   } catch (err) {
     res.status(404).json({ error: err.message });
   }
