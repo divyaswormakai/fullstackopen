@@ -9,9 +9,11 @@ const User = require('../models/user.model');
 const api = supertest(app);
 
 let header = {};
+let id = '';
 
 beforeEach(async () => {
   await Blog.deleteMany({});
+  await User.deleteMany({});
   let tempData = new Blog(helper.dummyData[0]);
   await tempData.save();
   let tempData2 = new Blog(helper.dummyData[1]);
@@ -23,8 +25,12 @@ beforeEach(async () => {
     password: '1234',
   };
   const res = await api.post('/api/users').send(newUser);
-  header = { Authorization: `bearer ${res.body.token}` };
+  delete newUser.name;
+  id = res.body.id;
+  const res2 = await api.post('/api/login').send(newUser);
+  header = { Authorization: `bearer ${res2.body.token}` };
 });
+
 describe('Initial get requests', () => {
   test('notes are returned as json', async () => {
     await api
@@ -50,9 +56,12 @@ describe('Initial get requests', () => {
 describe('all about post method', () => {
   //token works for only a few as of now
   test('POST method working', async () => {
+    const temp = helper.postData;
+    temp.user = id;
+    console.log(temp);
     const postedData = await api
       .post('/api/blogs')
-      .send(helper.postData)
+      .send(temp)
       .set(header)
       .expect(201)
       .expect('Content-Type', /application\/json/);
@@ -60,10 +69,11 @@ describe('all about post method', () => {
     delete postedData.body.id;
 
     const response = await api.get('/api/blogs');
+    delete postedData.body.user;
 
     expect(response.body).toHaveLength(helper.dummyData.length + 1);
     expect(postedData.body).toEqual(helper.postData);
-  });
+  }, 10000);
 
   test('Post method with likes set default to 0', async () => {
     const postedData = await api
@@ -75,27 +85,32 @@ describe('all about post method', () => {
     let tempData = helper.likePostData;
     tempData.likes = 0;
     delete postedData.body.id;
+    delete postedData.body.user;
     expect(postedData.body).toEqual(tempData);
-  });
+  }, 10000);
 
   test('Post method for missing title', async () => {
-    await api.post('/api/blogs').send(helper.noTitleData).expect(404);
+    await api
+      .post('/api/blogs')
+      .send(helper.noTitleData)
+      .set(header)
+      .expect(404);
   });
 
   test('Post method for missing url', async () => {
-    await api.post('/api/blogs').send(helper.noUrlData).expect(404);
+    await api.post('/api/blogs').send(helper.noUrlData).set(header).expect(404);
   });
-});
 
-describe('dealing with single blog resource', () => {
   test('For deleting a single resource', async () => {
     const blogs = await api.get('/api/blogs');
+    console.log(blogs[0]);
     const firstID = blogs.body[0].id;
 
     const deletedMsg = await api
       .delete(`/api/blogs/delete/${firstID}`)
+      .set(header)
       .expect(201);
-  });
+  }, 10000);
 
   test('For updating a single resource', async () => {
     const blogs = await api.get('/api/blogs');

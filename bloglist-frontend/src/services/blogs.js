@@ -6,4 +6,11 @@ const getAll = async () => {
   return response.data;
 };
 
-export default { getAll };
+const postBlog = async (data, header) => {
+  console.log(data, header);
+  const response = await axios.post(baseUrl, data, header);
+  console.log(response.data);
+  return response.data;
+};
+
+export default { getAll, postBlog };

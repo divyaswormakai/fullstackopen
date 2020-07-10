@@ -14,7 +14,6 @@ userRouter.get('/', async (req, res) => {
 userRouter.post('/', async (req, res) => {
   try {
     const body = req.body;
-    console.log(body);
 
     if (body.password.length <= 3) {
       res.status(400).send({ error: 'Password length not enough' });
@@ -29,7 +28,6 @@ userRouter.post('/', async (req, res) => {
     });
 
     const savedUser = await newUser.save();
-
     res.status(201).json(savedUser);
   } catch (err) {
     res.status(400).send({ error: err.message });

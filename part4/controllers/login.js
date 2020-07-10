@@ -7,7 +7,7 @@ const { response } = require('express');
 loginRouter.post('/', async (req, res) => {
   try {
     const body = req.body;
-
+    const users = await User.find({});
     const user = await User.findOne({ username: body.username });
     const passwordCorrect =
       user === null
@@ -26,6 +26,7 @@ loginRouter.post('/', async (req, res) => {
     const token = jwt.sign(userForToken, process.env.SECRET);
     res.status(201).send({ token, username: user.username, name: user.name });
   } catch (err) {
+    console.log('Something wrong');
     res.status(400).send({ error: err.message });
   }
 });
