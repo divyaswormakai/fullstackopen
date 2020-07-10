@@ -11,6 +11,10 @@ const App = () => {
 
   useEffect(() => {
     getBlogs();
+    if (localStorage.getItem('userToken')) {
+      setUserToken(localStorage.getItem('userToken'));
+      setUsername(localStorage.getItem('username'));
+    }
   }, []);
 
   const getBlogs = async () => {
@@ -26,49 +30,62 @@ const App = () => {
       password: password,
     };
     const tokens = await loginService.login(body);
-    console.log(tokens);
-    setUserToken(tokens.token);
+    const tokenFull = `bearer ${tokens.token}`;
+    setUserToken(tokenFull);
+    localStorage.setItem('userToken', tokenFull);
+    localStorage.setItem('username', tokens.username);
   };
 
-  return (
-    <div>
-      {userToken === null ? (
-        <>
-          <h2>Login Here</h2>
-          <form onSubmit={handleSubmit}>
-            <div>
-              Username:
-              <input
-                type="text"
-                value={username}
-                name="username"
-                onChange={({ target }) => setUsername(target.value)}
-              />
-            </div>
-            <div>
-              Password:
-              <input
-                type="text"
-                value={password}
-                name="password"
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </div>
-            <div>
-              <button type="submit">Login</button>
-            </div>
-          </form>
-        </>
-      ) : (
-        <>
-          <h2>blogs</h2>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
-        </>
-      )}
-    </div>
+  const handleLogout = () => {
+    setUserToken(null);
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('username');
+    setUsername('');
+    setPassword('');
+  };
+
+  const loginForm = () => (
+    <>
+      <h2>Login Here</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          Username:
+          <input
+            type="text"
+            value={username}
+            name="username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          Password:
+          <input
+            type="password"
+            value={password}
+            name="password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <div>
+          <button type="submit">Login</button>
+        </div>
+      </form>
+    </>
   );
+
+  const blogsDiv = () => (
+    <>
+      <p>
+        {username} is logged in. <button onClick={handleLogout}>Logout</button>
+      </p>
+      <h2>blogs</h2>
+      {blogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} />
+      ))}
+    </>
+  );
+
+  return <div>{userToken === null ? loginForm() : blogsDiv()}</div>;
 };
 
 export default App;
