@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useImperativeHandle } from 'react';
 
-const Toggalable = (props) => {
+const Toggalable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? 'none' : '' };
@@ -9,6 +9,13 @@ const Toggalable = (props) => {
   const toggleVisibility = () => {
     setVisible(!visible);
   };
+
+  //useImperative Hande hook will make the functions returned from the component accessible to all
+  useImperativeHandle(ref, () => {
+    return {
+      toggleVisibility,
+    };
+  });
 
   return (
     <div>
@@ -21,6 +28,6 @@ const Toggalable = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default Toggalable;

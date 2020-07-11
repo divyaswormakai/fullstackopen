@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const AddBlog = ({ userToken, setNewBlogs, setNotification }) => {
+const AddBlog = ({ handleAddBlog }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setURL] = useState('');
@@ -9,10 +9,7 @@ const AddBlog = ({ userToken, setNewBlogs, setNotification }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = { title: title, author: author, url: url };
-    const header = { headers: { Authorization: userToken } };
-    await blogService.postBlog(body, header, setNotification);
-    const blogs = await blogService.getAll();
-    setNewBlogs(blogs);
+    handleAddBlog(body);
   };
 
   return (

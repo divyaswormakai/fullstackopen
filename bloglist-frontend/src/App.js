@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/loginService';
 import AddBlog from './components/AddBlogForm';
 import Notification from './components/Notification';
 import Toggalable from './components/Toggalable';
+import LoginForm from './components/LoginForm';
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [userToken, setUserToken] = useState(null);
   const [notification, setNotification] = useState('');
+
+  const addBlogFormRef = useRef();
 
   useEffect(() => {
     getBlogs();
     if (localStorage.getItem('userToken')) {
       setUserToken(localStorage.getItem('userToken'));
-      setUsername(localStorage.getItem('username'));
     }
   }, []);
 
@@ -31,7 +31,7 @@ const App = () => {
     setBlogs(blogs);
   };
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e, username, password) => {
     e.preventDefault();
     console.log('Submito');
     let body = {
@@ -47,54 +47,28 @@ const App = () => {
     }
   };
 
+  const handleAddBlog = async (body) => {
+    const header = { headers: { Authorization: userToken } };
+    await blogService.postBlog(body, header, setNotification);
+    const blogs = await blogService.getAll();
+    setBlogs(blogs);
+    addBlogFormRef.current.toggleVisibility();
+  };
+
   const handleLogout = () => {
     setUserToken(null);
     localStorage.removeItem('userToken');
     localStorage.removeItem('username');
-    setUsername('');
-    setPassword('');
   };
-
-  const loginForm = () => (
-    <>
-      <h2>Login Here</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          Username:
-          <input
-            type="text"
-            value={username}
-            name="username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          Password:
-          <input
-            type="password"
-            value={password}
-            name="password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </form>
-    </>
-  );
 
   const blogsDiv = () => (
     <>
       <p>
-        {username} is logged in. <button onClick={handleLogout}>Logout</button>
+        {localStorage.getItem('username')} is logged in.{' '}
+        <button onClick={handleLogout}>Logout</button>
       </p>
-      <Toggalable buttonLabel="Add a new blog">
-        <AddBlog
-          userToken={userToken}
-          setNewBlogs={setBlogs}
-          setNotification={setNotification}
-        />
+      <Toggalable buttonLabel="Add a new blog" ref={addBlogFormRef}>
+        <AddBlog ref={addBlogFormRef} handleAddBlog={handleAddBlog} />
       </Toggalable>
 
       <h2>blogs</h2>
@@ -111,7 +85,11 @@ const App = () => {
           <Notification notification={notification} />
         ) : null}
       </div>
-      {userToken === null ? loginForm() : blogsDiv()}
+      {userToken === null ? (
+        <LoginForm handleLogin={handleLogin} />
+      ) : (
+        blogsDiv()
+      )}
     </div>
   );
 };

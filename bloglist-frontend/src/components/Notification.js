@@ -17,7 +17,6 @@ const Notification = ({ notification }) => {
     </>
   );
 
-  console.log(notification);
   return (
     <>{notification.includes('error') ? errornotifDOM() : successnotifDOM()}</>
   );

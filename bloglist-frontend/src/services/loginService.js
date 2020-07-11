@@ -6,7 +6,6 @@ const login = async (body, setNotification) => {
   try {
     const response = await axios.post(baseUrl, body);
     console.log(response.data);
-    console.log('ASDFASDF');
     setNotification(`Successfully logged in ${response.data.username}`);
 
     return response.data;
