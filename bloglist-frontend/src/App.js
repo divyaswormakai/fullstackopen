@@ -29,6 +29,9 @@ const App = () => {
 
   const getBlogs = async () => {
     const blogs = await blogService.getAll();
+    blogs.sort((a, b) => {
+      return b.likes - a.likes;
+    });
     setBlogs(blogs);
   };
 
