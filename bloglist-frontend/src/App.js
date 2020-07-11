@@ -55,6 +55,13 @@ const App = () => {
     addBlogFormRef.current.toggleVisibility();
   };
 
+  const increaseLike = async (blog) => {
+    console.log(blog.id);
+    const newBlog = { id: blog.id, likes: parseInt(blog.likes) + 1 };
+    await blogService.increaseLike(newBlog);
+    getBlogs();
+  };
+
   const handleLogout = () => {
     setUserToken(null);
     localStorage.removeItem('userToken');
@@ -74,7 +81,7 @@ const App = () => {
       <h2>blogs</h2>
       {blogs.map((blog) => (
         <div key={blog.id} className="blog-row">
-          <Blog blog={blog} />
+          <Blog blog={blog} increaseLike={increaseLike} />
         </div>
       ))}
     </>

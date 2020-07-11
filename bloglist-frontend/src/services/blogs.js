@@ -20,4 +20,16 @@ const postBlog = async (data, header, setNotification) => {
   return response.data;
 };
 
-export default { getAll, postBlog };
+const increaseLike = async (data) => {
+  console.log(data);
+  const updatePath = `${baseUrl}/update/${data.id}`;
+  try {
+    delete data.id;
+    const response = await axios.put(updatePath, data);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+export default { getAll, postBlog, increaseLike };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import blogs from '../services/blogs';
-const Blog = ({ blog }) => {
+import blogService from '../services/blogs';
+const Blog = ({ blog, increaseLike }) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? 'none' : '' };
@@ -21,10 +21,10 @@ const Blog = ({ blog }) => {
         <button onClick={handleToggle}>Hide Details</button>
         <p>{blog.author}</p>
         <div>
-          {blogs.likes}
-          <button>Like</button>
+          Likes: {blog.likes}&nbsp;&nbsp;
+          <button onClick={() => increaseLike(blog)}>Like</button>
         </div>
-        <p>{blog.likes}</p>
+        <p>{blog.url}</p>
       </div>
     </div>
   );
