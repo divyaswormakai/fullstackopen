@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
 
 const AddBlog = ({ handleAddBlog }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setURL] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const body = { title: title, author: author, url: url };
     handleAddBlog(body);

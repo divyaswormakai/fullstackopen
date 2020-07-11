@@ -6,6 +6,7 @@ import AddBlog from './components/AddBlogForm';
 import Notification from './components/Notification';
 import Toggalable from './components/Toggalable';
 import LoginForm from './components/LoginForm';
+import './App.css';
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [userToken, setUserToken] = useState(null);
@@ -50,8 +51,7 @@ const App = () => {
   const handleAddBlog = async (body) => {
     const header = { headers: { Authorization: userToken } };
     await blogService.postBlog(body, header, setNotification);
-    const blogs = await blogService.getAll();
-    setBlogs(blogs);
+    getBlogs();
     addBlogFormRef.current.toggleVisibility();
   };
 
@@ -73,7 +73,9 @@ const App = () => {
 
       <h2>blogs</h2>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <div key={blog.id} className="blog-row">
+          <Blog blog={blog} />
+        </div>
       ))}
     </>
   );
