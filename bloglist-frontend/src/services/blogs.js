@@ -32,4 +32,16 @@ const increaseLike = async (data) => {
     console.log(err.response.data);
   }
 };
-export default { getAll, postBlog, increaseLike };
+
+const deleteBlog = async (data, header) => {
+  const deletePath = `${baseUrl}/delete/${data.id}`;
+  console.log(header);
+  try {
+    const response = await axios.delete(deletePath, header);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+export default { getAll, postBlog, increaseLike, deleteBlog };

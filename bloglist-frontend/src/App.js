@@ -65,6 +65,22 @@ const App = () => {
     getBlogs();
   };
 
+  const deleteBlog = async (blog) => {
+    console.log(blog);
+    const header = { headers: { Authorization: userToken } };
+
+    if (
+      window.confirm(
+        `Do you really want to delete ${blog.title} by ${blog.author}?`
+      )
+    ) {
+      await blogService.deleteBlog(blog, header);
+      getBlogs();
+    } else {
+      console.log('CANCELED');
+    }
+  };
+
   const handleLogout = () => {
     setUserToken(null);
     localStorage.removeItem('userToken');
@@ -84,7 +100,11 @@ const App = () => {
       <h2>blogs</h2>
       {blogs.map((blog) => (
         <div key={blog.id} className="blog-row">
-          <Blog blog={blog} increaseLike={increaseLike} />
+          <Blog
+            blog={blog}
+            increaseLike={increaseLike}
+            deleteBlog={deleteBlog}
+          />
         </div>
       ))}
     </>

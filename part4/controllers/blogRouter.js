@@ -58,6 +58,7 @@ blogRouter.delete('/delete/:id', async (req, res) => {
   const id = req.params.id;
   try {
     console.log(JSON.stringify(req.headers));
+    console.log(JSON.stringify(req.heads));
     const token = req.headers.authorization.replace('bearer ', '');
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
