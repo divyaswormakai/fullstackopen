@@ -6,10 +6,17 @@ const getAll = async () => {
   return response.data;
 };
 
-const postBlog = async (data, header) => {
+const postBlog = async (data, header, setNotification) => {
   console.log(data, header);
   const response = await axios.post(baseUrl, data, header);
   console.log(response.data);
+  if (response.data.error) {
+    setNotification(`error ${response.data.error}`);
+  } else {
+    setNotification(
+      `a new blog ${response.data.title} by ${response.data.author} added`
+    );
+  }
   return response.data;
 };
 

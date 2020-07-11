@@ -3,12 +3,13 @@ import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/loginService';
 import AddBlog from './components/AddBlogForm';
-
+import Notification from './components/Notification';
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userToken, setUserToken] = useState(null);
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     getBlogs();
@@ -17,6 +18,12 @@ const App = () => {
       setUsername(localStorage.getItem('username'));
     }
   }, []);
+
+  //to set the timer for notificaiton
+  useEffect(() => {
+    console.log(notification);
+    setTimeout(() => setNotification(''), 2000);
+  }, [notification]);
 
   const getBlogs = async () => {
     const blogs = await blogService.getAll();
@@ -30,11 +37,13 @@ const App = () => {
       username: username,
       password: password,
     };
-    const tokens = await loginService.login(body);
-    const tokenFull = `bearer ${tokens.token}`;
-    setUserToken(tokenFull);
-    localStorage.setItem('userToken', tokenFull);
-    localStorage.setItem('username', tokens.username);
+    const tokens = await loginService.login(body, setNotification);
+    if (tokens !== null) {
+      const tokenFull = `bearer ${tokens.token}`;
+      setUserToken(tokenFull);
+      localStorage.setItem('userToken', tokenFull);
+      localStorage.setItem('username', tokens.username);
+    }
   };
 
   const handleLogout = () => {
@@ -79,7 +88,11 @@ const App = () => {
       <p>
         {username} is logged in. <button onClick={handleLogout}>Logout</button>
       </p>
-      <AddBlog userToken={userToken} setNewBlogs={setBlogs} />
+      <AddBlog
+        userToken={userToken}
+        setNewBlogs={setBlogs}
+        setNotification={setNotification}
+      />
       <h2>blogs</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
@@ -87,7 +100,16 @@ const App = () => {
     </>
   );
 
-  return <div>{userToken === null ? loginForm() : blogsDiv()}</div>;
+  return (
+    <div>
+      <div>
+        {notification.length > 0 ? (
+          <Notification notification={notification} />
+        ) : null}
+      </div>
+      {userToken === null ? loginForm() : blogsDiv()}
+    </div>
+  );
 };
 
 export default App;

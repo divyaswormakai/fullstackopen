@@ -1,0 +1,9 @@
+.errorNotif {
+  background-color: blanchedalmond;
+  border: red 5px solid;
+}
+
+.successNotif {
+  background-color: blanchedalmond;
+  border: green 5px solid;
+}
