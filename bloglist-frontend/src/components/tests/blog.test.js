@@ -56,4 +56,10 @@ test('clicking the show more button', () => {
   //check if the display is none
   const detailsDiv = component.container.querySelector('.expanded-blog');
   expect(detailsDiv).not.toHaveStyle('display:none');
+
+  //check if the like button is called twice
+  const likeBtn = component.container.querySelector('.increase-like-btn');
+  fireEvent.click(likeBtn);
+  fireEvent.click(likeBtn);
+  expect(increaseLike.mock.calls).toHaveLength(2);
 });
