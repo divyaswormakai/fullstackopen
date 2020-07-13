@@ -15,22 +15,33 @@ const Blog = ({ blog, increaseLike, deleteBlog }) => {
       <div style={hideWhenVisible} className="default-blog">
         <div className="blog-title-author">
           {blog.title},&nbsp;{blog.author} &nbsp; &nbsp;
-          <button onClick={handleToggle}>Show Details</button>
+          <button onClick={handleToggle} className="show-details-btn">
+            Show Details
+          </button>
         </div>
       </div>
       <div style={showWhenVisible} className="expanded-blog">
         <div className="blog-title-author">
           {blog.title},&nbsp;{blog.author} &nbsp; &nbsp;
-          <button onClick={handleToggle}>Show Details</button>
+          <button onClick={handleToggle} className="hide-details-btn">
+            Hide Details
+          </button>
         </div>
         <div className="blog-likes">
           Likes: {blog.likes}&nbsp;&nbsp;
-          <button onClick={() => increaseLike(blog)}>Like</button>
+          <button
+            onClick={() => increaseLike(blog)}
+            className="increase-like-btn"
+          >
+            Like
+          </button>
         </div>
         <div className="blog-url">
           <p>{blog.url}</p>
         </div>
-        <button onClick={() => deleteBlog(blog)}>Delete</button>
+        <button onClick={() => deleteBlog(blog)} className="delete-blog-btn">
+          Delete
+        </button>
       </div>
     </div>
   );
