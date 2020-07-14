@@ -26,7 +26,9 @@ const LoginForm = ({ handleLogin }) => {
           />
         </div>
         <div>
-          <button type="submit">Login</button>
+          <button type="submit" name="LoginSubmit">
+            Login
+          </button>
         </div>
       </form>
     </div>
