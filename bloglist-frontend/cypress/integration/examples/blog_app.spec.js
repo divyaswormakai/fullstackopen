@@ -43,13 +43,32 @@ describe('Blog app', function () {
     beforeEach(function () {
       cy.login(user);
       console.log(localStorage.getItem('userToken'));
-      cy.addBlog(blog, localStorage.getItem('userToken'));
+      cy.addBlog(blog);
+      cy.addBlog(blog2);
     });
 
     it('a new note is created', function () {
       //check if addblog btn from addblog form is seen
       //check if the blog is added
       cy.contains(blog.title);
+      cy.contains(blog2.title);
+    });
+
+    it('like button works', function () {
+      const blog1row = cy.contains(blog.title);
+      //show details
+      blog1row.parent().find('.show-details-btn').click();
+
+      const newblog1row = cy.contains(blog.title);
+      //click like btn
+      newblog1row.parent().parent().find('.increase-like-btn').as('likeBtn');
+      cy.get('@likeBtn').click();
+      // check if the number of like increased
+      newblog1row
+        .parent()
+        .parent()
+        .find('span')
+        .contains((blog.likes + 1).toString());
     });
   });
 });
@@ -59,5 +78,11 @@ const blog = {
   title: 'Blog from cypress',
   author: 'Author from cypress',
   url: 'url from cypress',
+  likes: 0,
+};
+const blog2 = {
+  title: 'Blogggso',
+  author: 'Author cypress',
+  url: 'url cypress',
   likes: 0,
 };

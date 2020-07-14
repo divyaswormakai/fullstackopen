@@ -14,7 +14,7 @@ const Blog = ({ blog, increaseLike, deleteBlog }) => {
     <div>
       <div style={hideWhenVisible} className="default-blog">
         <div className="blog-title-author">
-          {blog.title},&nbsp;{blog.author} &nbsp; &nbsp;
+          {blog.title}
           <button onClick={handleToggle} className="show-details-btn">
             Show Details
           </button>
@@ -28,7 +28,7 @@ const Blog = ({ blog, increaseLike, deleteBlog }) => {
           </button>
         </div>
         <div className="blog-likes">
-          Likes: {blog.likes}&nbsp;&nbsp;
+          Likes: <span>{blog.likes}</span>&nbsp;&nbsp;
           <button
             onClick={() => increaseLike(blog)}
             className="increase-like-btn"
@@ -52,4 +52,5 @@ Blog.propTypes = {
   increaseLike: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,
 };
+
 export default Blog;
