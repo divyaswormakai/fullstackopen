@@ -31,20 +31,57 @@ Cypress.Commands.add('login', ({ username, password }) => {
   }).then((res) => {
     localStorage.setItem('userToken', res.body.token);
     cy.visit('http://localhost:3000');
-    console.log(res.body.token);
   });
 });
 
 Cypress.Commands.add('addBlog', (props) => {
   let header = `bearer ${localStorage.getItem('userToken')}`;
-  console.log(props);
   cy.request({
     url: 'http://localhost:3001/api/blogs',
     method: 'POST',
     body: props,
     headers: { Authorization: header },
   }).then((res) => {
-    console.log(res);
     cy.visit('http://localhost:3000');
+  });
+});
+
+Cypress.Commands.add('deleteBlogSuccess', () => {
+  let blogs = [];
+  let header = `bearer ${localStorage.getItem('userToken')}`;
+
+  cy.request('GET', 'http://localhost:3001/api/blogs').then((res) => {
+    blogs = res.body;
+    console.log(res.body);
+    cy.request({
+      url: `http://localhost:3001/api/blogs/delete/${blogs[0].id}`,
+      method: 'DELETE',
+      body: blogs,
+      headers: { Authorization: header },
+    }).then((res) => {
+      cy.visit('http://localhost:3000');
+    });
+  });
+});
+
+Cypress.Commands.add('deleteBlogWithFail', () => {
+  let blogs = [];
+  let header = `bearer saalkjlkj${localStorage.getItem('userToken')}`;
+  console.log(header);
+
+  cy.request('GET', 'http://localhost:3001/api/blogs').then((res) => {
+    blogs = res.body;
+    console.log(res.body);
+    const url = `http://localhost:3001/api/blogs/delete/${blogs[0].id}`;
+    console.log(url);
+    cy.request({
+      url: url,
+      method: 'DELETE',
+      body: blogs,
+      headers: { Authorization: header },
+      failOnStatusCode: false,
+    }).then((res) => {
+      cy.visit('http://localhost:3000');
+    });
   });
 });

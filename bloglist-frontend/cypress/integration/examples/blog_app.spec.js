@@ -1,15 +1,30 @@
 //dont use arrow functions cause it might cause trouble in some case
 //it.only to run that case only
+
+const user = { username: '4567', password: '4567' };
+const user2 = { username: '1234', password: '1234' };
+const blog = {
+  title: 'Blog from cypress',
+  author: 'Author from cypress',
+  url: 'url from cypress',
+  likes: 0,
+};
+const blog2 = {
+  title: 'Blogggso',
+  author: 'Author cypress',
+  url: 'url cypress',
+  likes: 0,
+};
+
 describe('Blog app', function () {
   beforeEach(function () {
     //resetting the database here
     cy.request('POST', 'http://localhost:3001/api/testing/reset');
-    const user = {
-      name: '4567',
-      username: '4567',
-      password: '4567',
-    };
+    const user = { username: '4567', password: '4567', name: '4567' };
+    const user2 = { username: '1234', password: '1234', name: '1234' };
+
     cy.request('POST', 'http://localhost:3001/api/users', user);
+    cy.request('POST', 'http://localhost:3001/api/users', user2);
     cy.visit('http://localhost:3000');
   });
 
@@ -27,8 +42,8 @@ describe('Blog app', function () {
       cy.get('.successNotif').should('be.visible');
     });
     it('fails with wrong credentials', function () {
-      cy.get('.username').type('1234');
-      cy.get('.password').type('1234');
+      cy.get('.username').type('456789');
+      cy.get('.password').type('456789');
       cy.get('.LoginSubmit').click();
       //login failed case
       cy.contains('Login');
@@ -70,19 +85,18 @@ describe('Blog app', function () {
         .find('span')
         .contains((blog.likes + 1).toString());
     });
+
+    it('deleting a blog successfully', function () {
+      cy.deleteBlogSuccess();
+
+      cy.contains(blog.title).should('not.exist');
+    });
+
+    it('deleting a blog with failure', function () {
+      cy.login(user2);
+      cy.deleteBlogWithFail();
+
+      cy.contains(blog.title);
+    });
   });
 });
-
-const user = { username: '4567', password: '4567' };
-const blog = {
-  title: 'Blog from cypress',
-  author: 'Author from cypress',
-  url: 'url from cypress',
-  likes: 0,
-};
-const blog2 = {
-  title: 'Blogggso',
-  author: 'Author cypress',
-  url: 'url cypress',
-  likes: 0,
-};
