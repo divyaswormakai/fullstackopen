@@ -94,7 +94,11 @@ const App = () => {
         <button onClick={handleLogout}>Logout</button>
       </p>
       <Toggalable buttonLabel="Add a new blog" ref={addBlogFormRef}>
-        <AddBlog ref={addBlogFormRef} handleAddBlog={handleAddBlog} />
+        <AddBlog
+          ref={addBlogFormRef}
+          handleAddBlog={handleAddBlog}
+          class="add-blog-btn"
+        />
       </Toggalable>
 
       <h2>blogs</h2>

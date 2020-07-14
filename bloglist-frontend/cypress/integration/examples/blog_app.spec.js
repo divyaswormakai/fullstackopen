@@ -32,12 +32,32 @@ describe('Blog app', function () {
       cy.get('.LoginSubmit').click();
       //login failed case
       cy.contains('Login');
-      cy.get('.errorNotif').should('contain', 'Invalid username/password');
-      cy.get('.errorNotif').should(
-        'have.css',
-        'border-color',
-        'rgb(255, 0, 0)'
-      );
+      cy.get('.errorNotif')
+        .should('contain', 'Invalid username/password')
+        .and('have.css', 'border-color', 'rgb(255, 0, 0)');
+      cy.get('html').should('not.contain', '4567 is logged in.');
+    });
+  });
+
+  describe.only('When logged in', function () {
+    beforeEach(function () {
+      cy.login(user);
+      console.log(localStorage.getItem('userToken'));
+      cy.addBlog(blog, localStorage.getItem('userToken'));
+    });
+
+    it('a new note is created', function () {
+      //check if addblog btn from addblog form is seen
+      //check if the blog is added
+      cy.contains(blog.title);
     });
   });
 });
+
+const user = { username: '4567', password: '4567' };
+const blog = {
+  title: 'Blog from cypress',
+  author: 'Author from cypress',
+  url: 'url from cypress',
+  likes: 0,
+};
