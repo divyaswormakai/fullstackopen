@@ -24,7 +24,7 @@ const App = () => {
   //to set the timer for notificaiton
   useEffect(() => {
     console.log(notification);
-    setTimeout(() => setNotification(''), 2000);
+    setTimeout(() => setNotification(''), 5000);
   }, [notification]);
 
   const getBlogs = async () => {

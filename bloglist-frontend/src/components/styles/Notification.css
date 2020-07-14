@@ -1,6 +1,7 @@
 .errorNotif {
   background-color: blanchedalmond;
-  border: red 5px solid;
+  border: rgb(255, 0, 0), 5px solid;
+  color: rgb(255, 0, 0);
 }
 
 .successNotif {
