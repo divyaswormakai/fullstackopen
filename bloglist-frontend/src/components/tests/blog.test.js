@@ -1,10 +1,16 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
+<<<<<<< HEAD
 import { render, fireEvent } from '@testing-library/react';
 import Blog from '../Blog';
 import { prettyDOM } from '@testing-library/dom';
 
 //prettyDOM for searching specidif dom
+=======
+import { render } from '@testing-library/react';
+import Blog from '../Blog';
+
+>>>>>>> 76fee3fb094422f9d68f9fe9c816de69558d767b
 test('renders content', () => {
   const blog = {
     title: 'Test',
@@ -26,6 +32,7 @@ test('renders content', () => {
 
   expect(component.container).toHaveTextContent('Test');
 
+<<<<<<< HEAD
   const p = component.container.querySelector('p');
   console.log(prettyDOM(p));
 
@@ -62,4 +69,11 @@ test('clicking the show more button', () => {
   fireEvent.click(likeBtn);
   fireEvent.click(likeBtn);
   expect(increaseLike.mock.calls).toHaveLength(2);
+=======
+  const urlDiv = component.container.querySelector('blog-url');
+  expect(urlDiv).toBeNull();
+
+  const likeDiv = component.container.querySelector('blog-likes');
+  expect(likeDiv).toBeNull();
+>>>>>>> 76fee3fb094422f9d68f9fe9c816de69558d767b
 });

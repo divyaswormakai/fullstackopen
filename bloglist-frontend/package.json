@@ -36,8 +36,12 @@
   "proxy": "http://localhost:3001",
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
+<<<<<<< HEAD
     "@testing-library/react": "^9.5.0",
     "cypress": "^4.10.0",
     "eslint-plugin-cypress": "^2.11.1"
+=======
+    "@testing-library/react": "^9.5.0"
+>>>>>>> 76fee3fb094422f9d68f9fe9c816de69558d767b
   }
 }
