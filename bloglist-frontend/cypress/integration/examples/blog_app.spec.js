@@ -7,13 +7,19 @@ const blog = {
   title: 'Blog from cypress',
   author: 'Author from cypress',
   url: 'url from cypress',
-  likes: 0,
+  likes: 15,
 };
 const blog2 = {
   title: 'Blogggso',
   author: 'Author cypress',
   url: 'url cypress',
-  likes: 0,
+  likes: 5,
+};
+const blog3 = {
+  title: 'Thirdo',
+  author: 'Author cypress',
+  url: 'url cypress',
+  likes: 12,
 };
 
 describe('Blog app', function () {
@@ -60,6 +66,7 @@ describe('Blog app', function () {
       console.log(localStorage.getItem('userToken'));
       cy.addBlog(blog);
       cy.addBlog(blog2);
+      cy.addBlog(blog3);
     });
 
     it('a new note is created', function () {
@@ -97,6 +104,32 @@ describe('Blog app', function () {
       cy.deleteBlogWithFail();
 
       cy.contains(blog.title);
+    });
+
+    it.only('sorting of the blog is done right', function () {
+      //show details of all blogs
+      cy.get('.show-details-btn').click({ multiple: true });
+
+      const blogs = [blog, blog2, blog3];
+      let likes = [];
+      blogs.forEach((blogElem) => {
+        likes.push(parseInt(blogElem.likes));
+        console.log(typeof blogElem.likes);
+      });
+      //sorting the likes
+      let i = 0;
+      for (i = 0; i < likes.length; i++) {
+        let key = likes[i];
+        let j = i - 1;
+        while (j > 0 && key > likes[j]) {
+          likes[j + 1] = likes[j];
+          j -= 1;
+        }
+        likes[j + 1] = key;
+      }
+      //cheking if the first and last values are correct
+      cy.get('span:first').contains(likes[0]);
+      cy.get('span:last').contains(likes[likes.length - 1]);
     });
   });
 });
