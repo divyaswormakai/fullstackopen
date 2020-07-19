@@ -39,8 +39,6 @@ const anecdoteReducer = (state = initialState, action) => {
     default:
       return state;
   }
-
-  return state;
 };
 
 export const voteAnecdote = (id) => {
