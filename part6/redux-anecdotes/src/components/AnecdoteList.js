@@ -3,14 +3,26 @@ import { useSelector, useDispatch } from 'react-redux';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
 import { SetNotification } from '../reducers/notificationReducer';
 
-const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes);
-  const dispatch = useDispatch();
-
+const selectAnecdotes = ({ anecdotes, filter }) => {
+  let filteredAnecdotes = [];
+  if (filter.length > 0) {
+    filteredAnecdotes = anecdotes.filter((anecdote) =>
+      anecdote.content.includes(filter)
+    );
+  } else {
+    filteredAnecdotes = anecdotes;
+  }
   //sort the anecdotes
-  anecdotes.sort((a, b) => {
+
+  filteredAnecdotes.sort((a, b) => {
     return a.votes > b.votes ? -1 : 1;
   });
+
+  return filteredAnecdotes;
+};
+const AnecdoteList = () => {
+  const anecdotes = useSelector((state) => selectAnecdotes(state));
+  const dispatch = useDispatch();
 
   const clearNotificationTimer = setTimeout(() => {
     dispatch(SetNotification('No new notification'));
