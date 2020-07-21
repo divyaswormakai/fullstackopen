@@ -13,13 +13,15 @@ const selectAnecdotes = ({ anecdotes, filter }) => {
     filteredAnecdotes = anecdotes;
   }
   //sort the anecdotes
-
-  filteredAnecdotes.sort((a, b) => {
-    return a.votes > b.votes ? -1 : 1;
-  });
+  if (filteredAnecdotes.length > 0) {
+    filteredAnecdotes.sort((a, b) => {
+      return a.votes > b.votes ? -1 : 1;
+    });
+  }
 
   return filteredAnecdotes;
 };
+
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => selectAnecdotes(state));
   const dispatch = useDispatch();
@@ -28,9 +30,10 @@ const AnecdoteList = () => {
     dispatch(SetNotification('No new notification'));
   }, 5000);
 
-  const vote = (id) => {
+  const vote = (anecdote) => {
+    const id = anecdote.id;
     //voting the anecdote
-    dispatch(voteAnecdote(id));
+    dispatch(voteAnecdote(anecdote));
     console.log('vote', id);
     //set notification for anecdote
     const votedContent = anecdotes.find((anecdote) => anecdote.id === id)
@@ -48,7 +51,7 @@ const AnecdoteList = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       ))}

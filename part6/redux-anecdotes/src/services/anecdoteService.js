@@ -11,7 +11,15 @@ const createNew = async (anecdote) => {
   return response.data;
 };
 
+const updateAnecdote = async (anecdote) => {
+  const path = `${baseUrl}/${anecdote.id}`;
+  console.log(path);
+  const response = await axios.put(path, anecdote);
+  return response.data;
+};
+
 export default {
   getAll,
   createNew,
+  updateAnecdote,
 };
