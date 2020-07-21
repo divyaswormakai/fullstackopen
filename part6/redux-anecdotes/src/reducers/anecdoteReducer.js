@@ -14,7 +14,7 @@ const anecdoteReducer = (state = [], action) => {
   switch (action.type) {
     case 'VOTE_ANECDOTE': {
       const updatedAnecdote = action.data;
-      console.log(updatedAnecdote);
+      // console.log(updatedAnecdote);
       return state.map((state) =>
         state.id !== updatedAnecdote.id ? state : updatedAnecdote
       );
