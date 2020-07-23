@@ -19,17 +19,17 @@ const selectAnecdotes = ({ anecdotes, filter }) => {
       return a.votes > b.votes ? -1 : 1;
     });
   }
-  console.log('--fitlered anecdotes', filteredAnecdotes);
+  // console.log('--fitlered anecdotes', filteredAnecdotes);
   return { anecdotes: filteredAnecdotes };
 };
 
 const AnecdoteList = (props) => {
-  console.log(props);
+  // console.log(props);
   const vote = (anecdote) => {
     const id = anecdote.id;
     //voting the anecdote
     props.voteAnecdote(anecdote);
-    console.log('vote', id);
+    // console.log('vote', id);
 
     //set notification for anecdote
     const votedContent = props.anecdotes.find((anecdote) => anecdote.id === id)
@@ -58,7 +58,7 @@ const AnecdoteList = (props) => {
 const mapStateToProps = (state) => {
   let anecdotes = state.anecdotes;
   let filter = state.filter;
-  console.log(state);
+  // console.log(state);
   return selectAnecdotes({ anecdotes, filter });
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import AddAnecdoteForm from './components/AddAnecdote';
-import ConnectedAnecdoteList from './components/AnecdoteList';
+import AnecdoteList from './components/AnecdoteList';
 import Notification from './components/Notification';
 import Filter from './components/Filter';
 
@@ -20,7 +20,7 @@ const App = () => {
       <Notification />
       <h2>Anecdotes</h2>
       <Filter />
-      <ConnectedAnecdoteList />
+      <AnecdoteList />
       <AddAnecdoteForm />
     </div>
   );
