@@ -35,7 +35,7 @@ const AnecdoteList = (props) => {
     const votedContent = props.anecdotes.find((anecdote) => anecdote.id === id)
       .content;
     const notifMsg = `You voted: ${votedContent}`;
-    props.SetNotification(notifMsg, 5);
+    props.SetNotification(notifMsg, 3);
   };
 
   const temp = props.anecdotes ? (
