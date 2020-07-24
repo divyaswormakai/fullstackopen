@@ -9,7 +9,7 @@ const Anecdote = ({ anecdote }) => {
       <p>
         has <em>{anecdote.votes}</em> votes.
       </p>
-      <p>For more information visit: {anecdote.url}</p>
+      <p>For more information visit: {anecdote.info}</p>
     </div>
   );
 };
