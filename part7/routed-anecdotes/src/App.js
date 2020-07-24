@@ -3,8 +3,15 @@ import Footer from './component/Footer';
 import AnecdoteList from './component/AnecdoteList';
 import About from './component/About';
 import CreateNew from './component/CreateNew';
+import Anecdote from './component/Anecdote';
 
-import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Link,
+  Switch,
+  Route,
+  useRouteMatch,
+} from 'react-router-dom';
 
 const Menu = () => {
   const padding = {
@@ -49,8 +56,15 @@ const App = () => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
   };
+  const match = useRouteMatch('/anecdote/:id');
+  const selectedAnecdote = match
+    ? anecdotes.find((anecdote) => anecdote.id === match.params.id.toString())
+    : null;
 
-  const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
+  console.log(selectedAnecdote);
+  const anecdoteById = (id) => {
+    return anecdotes.find((a) => a.id === id);
+  };
 
   const vote = (id) => {
     const anecdote = anecdoteById(id);
@@ -73,6 +87,9 @@ const App = () => {
         </Route>
         <Route path="/create">
           <CreateNew addNew={addNew} />
+        </Route>
+        <Route path="/anecdote/:id">
+          <Anecdote anecdote={selectedAnecdote} />
         </Route>
         <Route path="/">
           <AnecdoteList anecdotes={anecdotes} />
