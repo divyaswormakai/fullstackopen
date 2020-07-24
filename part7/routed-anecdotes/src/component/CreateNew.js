@@ -30,6 +30,13 @@ const CreateNew = ({ addNew, setNotification }) => {
 
     history.push('/');
   };
+
+  const ResetAll = () => {
+    content.onReset();
+    author.onReset();
+    info.onReset();
+  };
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -48,6 +55,7 @@ const CreateNew = ({ addNew, setNotification }) => {
         </div>
         <button>create</button>
       </form>
+      <button onClick={ResetAll}>Reset</button>
     </div>
   );
 };
