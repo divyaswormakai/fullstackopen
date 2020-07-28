@@ -13,7 +13,7 @@ const AddBlog = ({ handleAddBlog }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const body = { title: title, author: author, url: url };
+    const body = { title: title, author: author, url: url, likes: 0 };
     const header = {
       headers: { Authorization: localStorage.getItem('userToken') },
     };

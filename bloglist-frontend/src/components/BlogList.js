@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Blog from './Blog';
@@ -9,10 +9,6 @@ import { setNotification } from '../reducers/notificationReducer';
 const BlogList = () => {
   const blogs = useSelector((state) => state.blogs);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   console.log('ASDF');
-  // }, [dispatch]);
 
   const increaseLike = async (blog) => {
     await dispatch(increaseLikeBlog(blog));

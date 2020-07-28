@@ -58,8 +58,8 @@ export const LogOutFromReducer = () => {
     localStorage.removeItem('userToken');
     localStorage.removeItem('username');
     const userData = {
-      token: '',
-      username: '',
+      token: null,
+      username: null,
     };
     dispatch({
       type: 'LOGOUT',

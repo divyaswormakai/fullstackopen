@@ -40,11 +40,11 @@ export const initializeBlogs = () => {
 
 export const addBlog = (blog, header) => {
   return async (dispatch) => {
-    await blogService.postBlog(blog, header);
+    const newBlog = await blogService.postBlog(blog, header);
     //set notification with notification reducer
     dispatch({
       type: 'ADD_BLOG',
-      data: blog,
+      data: newBlog,
     });
   };
 };
