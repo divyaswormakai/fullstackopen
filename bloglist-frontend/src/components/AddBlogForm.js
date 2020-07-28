@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { addBlog } from '../reducers/blogReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
 const AddBlog = ({ handleAddBlog }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setURL] = useState('');
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const body = { title: title, author: author, url: url };
-    handleAddBlog(body);
+    const header = {
+      headers: { Authorization: localStorage.getItem('userToken') },
+    };
+    await dispatch(addBlog(body, header));
+    await dispatch(setNotification('New blog has been added', 5));
+    handleAddBlog();
   };
 
   return (
@@ -20,7 +31,7 @@ const AddBlog = ({ handleAddBlog }) => {
           <input
             id="title"
             type="text"
-            class="add-blog-title"
+            className="add-blog-title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
             required={true}
@@ -31,7 +42,7 @@ const AddBlog = ({ handleAddBlog }) => {
           <input
             id="author"
             type="text"
-            class="add-blog-author"
+            className="add-blog-author"
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
             required={true}
@@ -42,14 +53,14 @@ const AddBlog = ({ handleAddBlog }) => {
           <input
             id="url"
             type="text"
-            class="add-blog-url"
+            className="add-blog-url"
             value={url}
             onChange={({ target }) => setURL(target.value)}
             required={true}
           />
         </div>
         <div>
-          <button type="submit" class="add-blog-submit-btn">
+          <button type="submit" className="add-blog-submit-btn">
             Add My Blog
           </button>
         </div>

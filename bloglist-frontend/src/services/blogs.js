@@ -6,27 +6,17 @@ const getAll = async () => {
   return response.data;
 };
 
-const postBlog = async (data, header, setNotification) => {
-  console.log(data, header);
+const postBlog = async (data, header) => {
   const response = await axios.post(baseUrl, data, header);
-  console.log(response.data);
-  if (response.data.error) {
-    setNotification(`error ${response.data.error}`);
-  } else {
-    setNotification(
-      `a new blog ${response.data.title} by ${response.data.author} added`
-    );
-  }
+
   return response.data;
 };
 
 const increaseLike = async (data) => {
-  console.log(data);
   const updatePath = `${baseUrl}/update/${data.id}`;
   try {
     delete data.id;
     const response = await axios.put(updatePath, data);
-    console.log(response.data);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
