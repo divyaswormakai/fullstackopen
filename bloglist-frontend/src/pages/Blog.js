@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { getSingleBlog } from '../reducers/blogReducer';
 import {
@@ -12,6 +12,7 @@ import {
 import { setNotification } from '../reducers/notificationReducer';
 
 import { Link, useHistory } from 'react-router-dom';
+import { Button, TextField } from '@material-ui/core';
 
 const Blog = () => {
   const blogID = useParams().id;
@@ -70,33 +71,41 @@ const Blog = () => {
             </p>
           </div>
           <div className="blog-likes">
-            Likes: <span>{blog.likes}</span>&nbsp;&nbsp;
+            <em>
+              Likes: <span>{blog.likes}</span>
+            </em>
           </div>
           <div>
-            <button
+            <Button
               onClick={() => increaseLike(blog)}
               className="increase-like-btn"
+              color="primary"
+              variant="contained"
             >
               Like
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => deleteBlogFunc(blog)}
               className="delete-blog-btn"
+              color="secondary"
             >
               Delete
-            </button>
+            </Button>
           </div>
           <div className="blog-add-comment">
             <form onSubmit={addComment}>
               <div>
-                <input
+                <TextField
                   type="text"
                   value={comment}
                   name="comment"
                   className="comment"
                   onChange={({ target }) => setComment(target.value)}
                 />
-                <button type="submit">Add This Comment</button>
+                &nbsp;&nbsp;
+                <Button type="submit" color="primary" variant="contained">
+                  Add This Comment
+                </Button>
               </div>
             </form>
           </div>

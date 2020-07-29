@@ -5,6 +5,9 @@ import LoginForm from '../components/LoginForm';
 
 import { LogOutFromReducer, InitializeUser } from '../reducers/userReducer';
 
+import { Button } from '@material-ui/core';
+
+import './styles/Notification.css';
 const UserInfo = () => {
   const dispatch = useDispatch();
 
@@ -26,7 +29,13 @@ const UserInfo = () => {
         <>
           <p>
             {userInfo.username} is logged in.{' '}
-            <button onClick={handleLogout}>Logout</button>
+            <Button
+              onClick={handleLogout}
+              className="navbar-logout"
+              variant="contained"
+            >
+              Logout
+            </Button>
           </p>
         </>
       )}

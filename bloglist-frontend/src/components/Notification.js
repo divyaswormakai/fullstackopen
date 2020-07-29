@@ -2,23 +2,23 @@ import React from 'react';
 import './styles/Notification.css';
 
 import { useSelector } from 'react-redux';
-
+import { Alert } from '@material-ui/lab';
 const Notification = () => {
   const notification = useSelector((state) => state.notification);
   const errornotifDOM = () => (
     <>
-      <div className="errorNotif">
+      <Alert severity="error">
         <p>{notification.replace('error', '')}</p>
-      </div>
+      </Alert>
     </>
   );
   const successnotifDOM = () => {
     if (notification.length > 0) {
       return (
         <>
-          <div className="successNotif">
+          <Alert severity="success">
             <p>{notification}</p>
-          </div>
+          </Alert>
         </>
       );
     } else {

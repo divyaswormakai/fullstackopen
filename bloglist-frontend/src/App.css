@@ -27,11 +27,3 @@
 .App-link {
   color: #61dafb;
 }
-
-.blog-row {
-  border: solid black 2px;
-  border-radius: 5px;
-  display: flex;
-  margin: 10px;
-  padding: 5px;
-}

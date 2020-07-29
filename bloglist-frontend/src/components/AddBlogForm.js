@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { addBlog } from '../reducers/blogReducer';
 import { setNotification } from '../reducers/notificationReducer';
+import { TextField, Button } from '@material-ui/core';
 
 const AddBlog = ({ handleAddBlog }) => {
   const [title, setTitle] = useState('');
@@ -28,7 +29,7 @@ const AddBlog = ({ handleAddBlog }) => {
       <form onSubmit={handleSubmit} className="add-blog-form">
         <div>
           Title:
-          <input
+          <TextField
             id="title"
             type="text"
             className="add-blog-title"
@@ -39,7 +40,7 @@ const AddBlog = ({ handleAddBlog }) => {
         </div>
         <div>
           Author:
-          <input
+          <TextField
             id="author"
             type="text"
             className="add-blog-author"
@@ -50,7 +51,7 @@ const AddBlog = ({ handleAddBlog }) => {
         </div>
         <div>
           URL:
-          <input
+          <TextField
             id="url"
             type="text"
             className="add-blog-url"
@@ -60,9 +61,13 @@ const AddBlog = ({ handleAddBlog }) => {
           />
         </div>
         <div>
-          <button type="submit" className="add-blog-submit-btn">
+          <Button
+            type="submit"
+            className="add-blog-submit-btn"
+            variant="contained"
+          >
             Add My Blog
-          </button>
+          </Button>
         </div>
       </form>
     </div>

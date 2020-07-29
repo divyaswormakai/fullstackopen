@@ -5,6 +5,17 @@ import { useParams } from 'react-router-dom';
 
 import { getSingleUser } from '../reducers/userDetailsReducer';
 
+import {
+  TableContainer,
+  TableRow,
+  Table,
+  Paper,
+  TableCell,
+  Link,
+} from '@material-ui/core';
+
+import '../components/styles/User.css';
+
 const User = () => {
   const userID = useParams().id;
   const dispatch = useDispatch();
@@ -20,9 +31,21 @@ const User = () => {
         <div>
           <h1>{userDetails.name}</h1>
           <h4>Added Blogs</h4>
-          {userDetails.blogs.map((blog) => {
-            return <li key={blog.id}>{blog.title}</li>;
-          })}
+          <TableContainer component={Paper}>
+            <Table>
+              {userDetails.blogs.map((blog) => {
+                return (
+                  <TableRow key={blog.id}>
+                    <TableCell>
+                      <Link to={`/blog/${blog.id}`} className="user-blog-row">
+                        {blog.title}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </Table>
+          </TableContainer>
         </div>
       ) : null}
     </>

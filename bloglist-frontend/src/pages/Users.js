@@ -4,17 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers } from '../reducers/userDetailsReducer';
 
 import { Link } from 'react-router-dom';
+import {
+  TableContainer,
+  TableRow,
+  TableHead,
+  Table,
+  Paper,
+  TableCell,
+} from '@material-ui/core';
 
-const UserRow = ({ user }) => {
-  return (
-    <tr key={user.id}>
-      <td>
-        <Link to={`/user/${user.id}`}>{user.name}</Link>
-      </td>
-      <td>{user.blogs.length}</td>
-    </tr>
-  );
-};
+import '../components/styles/User.css';
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -30,19 +29,37 @@ const Users = () => {
     return (
       <>
         <h1>Users:</h1>
-        <table>
-          <tr>
-            <th width="200px">Full Name:</th>
-            <th>Blogs Created:</th>
-          </tr>
-          <tbody>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <b>Full Name</b>
+                </TableCell>
+                <TableCell>
+                  <b>Blogs Created</b>
+                </TableCell>
+              </TableRow>
+            </TableHead>
             {userDetails.length > 0
               ? userDetails.map((user) => {
-                  return <UserRow user={user} />;
+                  return (
+                    <TableRow key={user.id} className="users-list-row">
+                      <TableCell>
+                        <Link
+                          to={`/user/${user.id}`}
+                          className="users-username"
+                        >
+                          {user.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{user.blogs.length}</TableCell>
+                    </TableRow>
+                  );
                 })
               : null}
-          </tbody>
-        </table>
+          </Table>
+        </TableContainer>
       </>
     );
   };

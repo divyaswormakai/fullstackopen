@@ -1,0 +1,16 @@
+.users-username,
+.user-blog-row {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.user-blog-row:hover {
+  cursor: pointer;
+}
+
+.users-list-row:hover {
+  background-color: rgba(22, 61, 179, 0.5);
+  color: white;
+}
