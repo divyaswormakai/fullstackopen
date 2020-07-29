@@ -7,7 +7,7 @@ import UserInfo from './UserInfo';
 
 const Navbar = () => {
   return (
-    <div class="navbar">
+    <div className="navbar">
       <Link to="/">home</Link> &nbsp; &nbsp;
       <Link to="/users">users</Link>
       <UserInfo />

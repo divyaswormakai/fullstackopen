@@ -18,6 +18,13 @@ const postBlog = async (data, header) => {
   return response.data;
 };
 
+const postComment = async (comment, id) => {
+  const postUrl = `${baseUrl}/${id}/comment`;
+  console.log(postUrl);
+  const response = await axios.post(postUrl, comment);
+  return response.data;
+};
+
 const increaseLike = async (data) => {
   const updatePath = `${baseUrl}/update/${data.id}`;
   try {
@@ -40,4 +47,11 @@ const deleteBlog = async (data, header) => {
     console.log(err.response.data);
   }
 };
-export default { getAll, getSingleBlog, postBlog, increaseLike, deleteBlog };
+export default {
+  getAll,
+  getSingleBlog,
+  postBlog,
+  increaseLike,
+  deleteBlog,
+  postComment,
+};

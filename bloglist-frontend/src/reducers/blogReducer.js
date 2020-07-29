@@ -8,6 +8,9 @@ const blogReducer = (state = [], action) => {
     case 'GET_SINGLE_BLOG': {
       return [action.data];
     }
+    case 'POST_COMMENT': {
+      return [action.data];
+    }
     case 'ADD_BLOG': {
       return [action.data, ...state];
     }
@@ -47,6 +50,16 @@ export const getSingleBlog = (id) => {
     dispatch({
       type: 'GET_SINGLE_BLOG',
       data: blog,
+    });
+  };
+};
+
+export const postComment = (comment, id) => {
+  return async (dispatch) => {
+    const updatedBlog = await blogService.postComment(comment, id);
+    dispatch({
+      type: 'POST_COMMENT',
+      data: updatedBlog,
     });
   };
 };

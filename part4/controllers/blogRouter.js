@@ -9,6 +9,17 @@ blogRouter.get('/', async (req, res) => {
   res.json(blogs.map((blog) => blog.toJSON()));
 });
 
+blogRouter.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  try {
+    const blog = await Blog.findById(id);
+    res.status(201).json(blog);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+});
+
 blogRouter.post('/', async (req, res) => {
   const body = req.body;
 
@@ -43,14 +54,19 @@ blogRouter.post('/', async (req, res) => {
   }
 });
 
-blogRouter.get('/:id', async (req, res) => {
+blogRouter.post('/:id/comment', async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   try {
-    const blog = await Blog.findById(id);
-    res.status(201).json(blog);
+    const comment = req.body;
+    console.log(comment);
+    const updatedBlog = await Blog.findOneAndUpdate(
+      { _id: id },
+      { $push: { comments: comment.comment } },
+      { upsert: true, new: true }
+    );
+    res.status(201).json(updatedBlog);
   } catch (err) {
-    res.status(404).json({ error: err.message });
+    res.status(400).json({ error: err.message });
   }
 });
 
