@@ -5,6 +5,9 @@ const blogReducer = (state = [], action) => {
     case 'INITIALIZE_BLOGS': {
       return action.data;
     }
+    case 'GET_SINGLE_BLOG': {
+      return [action.data];
+    }
     case 'ADD_BLOG': {
       return [action.data, ...state];
     }
@@ -34,6 +37,16 @@ export const initializeBlogs = () => {
     dispatch({
       type: 'INITIALIZE_BLOGS',
       data: blogs,
+    });
+  };
+};
+
+export const getSingleBlog = (id) => {
+  return async (dispatch) => {
+    const blog = await blogService.getSingleBlog(id);
+    dispatch({
+      type: 'GET_SINGLE_BLOG',
+      data: blog,
     });
   };
 };

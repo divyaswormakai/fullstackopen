@@ -12,7 +12,7 @@ const User = () => {
 
   useEffect(() => {
     dispatch(getSingleUser(userID));
-  }, [dispatch]);
+  }, [dispatch, userID]);
 
   return (
     <>

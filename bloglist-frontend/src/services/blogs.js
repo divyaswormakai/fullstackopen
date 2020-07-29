@@ -6,6 +6,12 @@ const getAll = async () => {
   return response.data;
 };
 
+const getSingleBlog = async (id) => {
+  const getUrl = `${baseUrl}/${id}`;
+  const response = await axios.get(getUrl);
+  return response.data;
+};
+
 const postBlog = async (data, header) => {
   const response = await axios.post(baseUrl, data, header);
 
@@ -34,4 +40,4 @@ const deleteBlog = async (data, header) => {
     console.log(err.response.data);
   }
 };
-export default { getAll, postBlog, increaseLike, deleteBlog };
+export default { getAll, getSingleBlog, postBlog, increaseLike, deleteBlog };
