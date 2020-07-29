@@ -5,6 +5,9 @@ const userDetailsReducer = (state = [], action) => {
     case 'GET_ALL': {
       return action.data;
     }
+    case 'GET_SINGLE_BLOG': {
+      return action.data;
+    }
     default: {
       return state;
     }
@@ -14,10 +17,19 @@ const userDetailsReducer = (state = [], action) => {
 export const getAllUsers = () => {
   return async (dispatch) => {
     const users = await userService.getAllUsers();
-    console.log(users);
     dispatch({
       type: 'GET_ALL',
       data: users,
+    });
+  };
+};
+
+export const getSingleUser = (id) => {
+  return async (dispatch) => {
+    const user = await userService.getSingleUser(id);
+    dispatch({
+      type: 'GET_SINGLE_BLOG',
+      data: user,
     });
   };
 };

@@ -10,4 +10,14 @@ const getAllUsers = async () => {
   }
 };
 
-export default { getAllUsers };
+const getSingleUser = async (id) => {
+  try {
+    const getUrl = `${baseUrl}/${id}`;
+    const response = await axios.get(getUrl);
+    return response.data;
+  } catch (err) {
+    return null;
+  }
+};
+
+export default { getAllUsers, getSingleUser };

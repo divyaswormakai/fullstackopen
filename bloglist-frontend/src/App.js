@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Notification from './components/Notification';
 import UserInfo from './components/UserInfo';
 import Users from './pages/Users';
+import User from './pages/User';
 
 const App = () => {
   return (
@@ -14,6 +15,9 @@ const App = () => {
         <UserInfo />
       </div>
       <Switch>
+        <Route path="/user/:id">
+          <User />
+        </Route>
         <Route path="/users">
           <Users />
         </Route>

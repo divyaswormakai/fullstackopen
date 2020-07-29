@@ -3,10 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getAllUsers } from '../reducers/userDetailsReducer';
 
+import { Link } from 'react-router-dom';
+
 const UserRow = ({ user }) => {
   return (
     <tr key={user.id}>
-      <td>{user.name}</td>
+      <td>
+        <Link to={`/user/${user.id}`}>{user.name}</Link>
+      </td>
       <td>{user.blogs.length}</td>
     </tr>
   );
