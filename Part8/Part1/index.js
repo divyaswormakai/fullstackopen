@@ -65,14 +65,18 @@ const resolvers = {
       return booksInGenre;
     },
     allAuthors: async (root, args) => {
-      const authors = await Author.find({});
-      return authors.map(async (tempAuthor) => {
-        const books = await Book.find({ author: tempAuthor.id });
-        console.log(books);
-        tempAuthor.bookCount = books.length;
-        console.log(tempAuthor);
-        return tempAuthor;
-      });
+      try {
+        const authors = await Author.find({});
+        return authors.map(async (tempAuthor) => {
+          const books = await Book.find({ author: tempAuthor.id });
+          console.log(books);
+          tempAuthor.bookCount = books.length;
+          console.log(tempAuthor);
+          return tempAuthor;
+        });
+      } catch (err) {
+        console.log('Error getting author details', err.message);
+      }
     },
   },
 
@@ -95,7 +99,7 @@ const resolvers = {
         return newBook;
       } catch (err) {
         console.log('Error saving new book');
-        console.log(err.message);
+        throw new UserInputError(error.message, { invalidArgs: args });
       }
     },
 
@@ -113,7 +117,7 @@ const resolvers = {
         return author;
       } catch (err) {
         console.log('Error editing author');
-        console.log(err.message);
+        throw new UserInputError(error.message, { invalidArgs: args });
       }
     },
   },
