@@ -1,6 +1,5 @@
 const { ApolloServer, UserInputError, gql } = require('apollo-server');
 const mongoose = require('mongoose');
-const { v1: uuid } = require('uuid');
 const { MONGODB_URI } = require('./url');
 const Author = require('./model/Author.model');
 const Book = require('./model/Book.model');
@@ -58,46 +57,64 @@ const resolvers = {
     bookCount: async () => await Book.collection.countDocuments(),
     authorCount: async () => await Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      if (!args.genre) {
+      if (!args.author) {
         return books;
       }
       let genre = args.genre;
       let booksInGenre = books.filter((book) => book.genres.includes(genre));
       return booksInGenre;
     },
-    allAuthors: (root, args) => {
-      return authors.map((author) => {
-        let count = books.filter((book) => book.author === author.name).length;
-        return { name: author.name, bookCount: count, born: author.born };
+    allAuthors: async (root, args) => {
+      const authors = await Author.find({});
+      return authors.map(async (tempAuthor) => {
+        const books = await Book.find({ author: tempAuthor.id });
+        console.log(books);
+        tempAuthor.bookCount = books.length;
+        console.log(tempAuthor);
+        return tempAuthor;
       });
     },
   },
 
   Mutation: {
-    addBook: (root, args) => {
-      let author = authors.find((author) => author.name === args.author);
-      if (author === undefined) {
-        author = {
-          name: args.author,
-          id: uuid(),
-          born: null,
-        };
-        authors = authors.concat(author);
-      }
+    addBook: async (root, args) => {
+      try {
+        let author = await Author.findOne({ name: args.author });
+        console.log(author);
+        if (author === undefined || author === null) {
+          author = new Author({
+            name: args.author,
+            born: null,
+          });
+          const newAuthor = await author.save();
+          author = newAuthor;
+        }
 
-      let newBook = { ...args, id: uuid(), author: author.name };
-      books = books.concat(newBook);
-      return newBook;
+        let newBook = new Book({ ...args, author: author });
+        await newBook.save();
+        return newBook;
+      } catch (err) {
+        console.log('Error saving new book');
+        console.log(err.message);
+      }
     },
 
-    editAuthor: (root, args) => {
-      let author = authors.find((author) => author.name === args.name);
-      if (author === undefined) {
-        return null;
+    editAuthor: async (root, args) => {
+      try {
+        let author = await Author.findOneAndUpdate(
+          { name: args.name },
+          { $set: { born: args.born } },
+          { new: true }
+        );
+        console.log(author);
+        if (author === undefined || author === null) {
+          return null;
+        }
+        return author;
+      } catch (err) {
+        console.log('Error editing author');
+        console.log(err.message);
       }
-
-      author.born = args.born;
-      return author;
     },
   },
 };
