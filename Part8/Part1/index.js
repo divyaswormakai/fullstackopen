@@ -47,7 +47,7 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(genre: String): [Book!]!
+    allBooks(author: String): [Book!]!
     allAuthors: [Author!]!
     me: User
   }
@@ -74,20 +74,19 @@ const resolvers = {
     authorCount: async () => await Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (!args.author) {
-        return books;
+        return await Book.find({}).populate('author');
       }
-      let genre = args.genre;
-      let booksInGenre = books.filter((book) => book.genres.includes(genre));
-      return booksInGenre;
+      let author = args.author;
+      let authorBooks = await Book.find({ author: author }).populate('author');
+      console.log(authorBooks);
+      return authorBooks;
     },
     allAuthors: async (root, args) => {
       try {
         const authors = await Author.find({});
         return authors.map(async (tempAuthor) => {
           const books = await Book.find({ author: tempAuthor.id });
-          console.log(books);
           tempAuthor.bookCount = books.length;
-          console.log(tempAuthor);
           return tempAuthor;
         });
       } catch (err) {
@@ -96,7 +95,6 @@ const resolvers = {
     },
     me: async (root, args, context) => {
       console.log('ASDFASDF');
-      console.log(context);
       return context.currentUser;
     },
   },
@@ -163,7 +161,6 @@ const resolvers = {
         if (!user || args.password !== 'Password') {
           throw new UserInputError('Incorrect credentials');
         }
-        console.log(user);
         const userToken = { username: user.username, id: user._id };
         return { value: jwt.sign(userToken, JWT_SECRET) };
       } catch (err) {
