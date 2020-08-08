@@ -51,6 +51,7 @@ const typeDefs = gql`
     allAuthors: [Author!]!
     me: User
     favorites: [Book!]!
+    allGenres: [String!]!
   }
 
   type Mutation {
@@ -102,6 +103,11 @@ const resolvers = {
       const favorite = context.currentUser.favoriteGenre;
       console.log(favorite);
       const books = await Book.find({ genres: favorite }).populate('author');
+      console.log(books);
+      return books;
+    },
+    allGenres: async () => {
+      const books = await Book.find({}).distinct('genres');
       console.log(books);
       return books;
     },

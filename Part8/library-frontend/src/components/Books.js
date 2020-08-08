@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { ALL_BOOKS } from '../queries';
+import { ALL_BOOKS, ALL_GENRES } from '../queries';
 const Books = (props) => {
   const result = useQuery(ALL_BOOKS);
+  const genreResult = useQuery(ALL_GENRES);
   const [currGenre, setCurrGenre] = useState('All');
 
   if (!props.show) {
@@ -13,6 +14,8 @@ const Books = (props) => {
     return <div>Loading...</div>;
   }
   let books = result.data.allBooks;
+  let genres = genreResult.data.allGenres;
+  // genres.push('All');
   console.log('Getting the book from genres');
   if (currGenre === 'All') {
     console.log('This is al selected');
@@ -25,11 +28,16 @@ const Books = (props) => {
   }
 
   const GetGenres = () => {
-    return genres.map((genre) => (
-      <button onClick={() => setCurrGenre(genre)} key={genre}>
-        {genre}
-      </button>
-    ));
+    return (
+      <>
+        <button onClick={() => setCurrGenre('All')}>All</button>
+        {genres.map((genre) => (
+          <button onClick={() => setCurrGenre(genre)} key={genre}>
+            {genre}
+          </button>
+        ))}
+      </>
+    );
   };
 
   return (
@@ -57,7 +65,5 @@ const Books = (props) => {
     </div>
   );
 };
-
-const genres = ['Coding', 'Classic', 'Covid', 'All'];
 
 export default Books;

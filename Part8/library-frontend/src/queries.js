@@ -42,3 +42,9 @@ export const FAVORITE_BOOKS = gql`
     }
   }
 `;
+
+export const ALL_GENRES = gql`
+  query {
+    allGenres
+  }
+`;
