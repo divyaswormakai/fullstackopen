@@ -50,6 +50,7 @@ const typeDefs = gql`
     allBooks(author: String): [Book!]!
     allAuthors: [Author!]!
     me: User
+    favorites: [Book!]!
   }
 
   type Mutation {
@@ -96,6 +97,13 @@ const resolvers = {
     me: async (root, args, context) => {
       console.log('ASDFASDF');
       return context.currentUser;
+    },
+    favorites: async (root, args, context) => {
+      const favorite = context.currentUser.favoriteGenre;
+      console.log(favorite);
+      const books = await Book.find({ genres: favorite }).populate('author');
+      console.log(books);
+      return books;
     },
   },
 

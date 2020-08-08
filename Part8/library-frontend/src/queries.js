@@ -22,3 +22,23 @@ export const ALL_BOOKS = gql`
     }
   }
 `;
+
+export const USER_DETAILS = gql`
+  query {
+    me {
+      favoriteGenre
+    }
+  }
+`;
+
+export const FAVORITE_BOOKS = gql`
+  query {
+    favorites {
+      title
+      author {
+        name
+      }
+      published
+    }
+  }
+`;
