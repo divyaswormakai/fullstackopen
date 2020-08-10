@@ -16,6 +16,9 @@ const NewBook = (props) => {
       { query: ALL_AUTHORS },
       { query: FAVORITE_BOOKS },
     ],
+    update: (store, response) => {
+      props.updateCacheWith(response.data.addBook);
+    },
   });
 
   if (!props.show) {

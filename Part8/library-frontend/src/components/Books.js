@@ -16,14 +16,14 @@ const Books = (props) => {
   let books = result.data.allBooks;
   let genres = genreResult.data.allGenres;
   // genres.push('All');
-  console.log('Getting the book from genres');
+  // console.log('Getting the book from genres');
   if (currGenre === 'All') {
-    console.log('This is al selected');
+    // console.log('This is al selected');
   } else {
     const filteredBooks = books.filter((book) =>
       book.genres.includes(currGenre)
     );
-    console.log(filteredBooks);
+    // console.log(filteredBooks);
     books = filteredBooks;
   }
 
