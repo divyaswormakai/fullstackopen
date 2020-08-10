@@ -72,7 +72,7 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    bookAdded: [Book!]!
+    bookAdded: Book!
   }
 `;
 
@@ -212,8 +212,7 @@ const server = new ApolloServer({
   },
 });
 
-server.listen().then(({ url,subscriptionUrl }) => {
+server.listen().then(({ url, subscriptionUrl }) => {
   console.log(`Server ready at ${url}`);
-  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
-
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`);
 });

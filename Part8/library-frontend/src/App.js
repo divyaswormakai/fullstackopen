@@ -3,13 +3,21 @@ import Authors from './components/Authors';
 import Books from './components/Books';
 import NewBook from './components/NewBook';
 import LoginForm from './components/LoginForm';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, useSubscription } from '@apollo/client';
 import Favorites from './components/Favorite';
+import { BOOK_ADDED } from './subscriptions';
 
 const App = () => {
   const [page, setPage] = useState('authors');
   const [token, setToken] = useState(localStorage.getItem('userToken'));
   const client = useApolloClient();
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData);
+      window.alert('New book added');
+    },
+  });
 
   const UserLogout = () => {
     setToken(null);
