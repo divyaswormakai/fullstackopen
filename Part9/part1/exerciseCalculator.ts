@@ -32,7 +32,10 @@ const argsParse2 = (args: Array<string>): argsRes => {
   };
 };
 
-const calculateExercises = (exerciseArr: number[], target: number) => {
+export const calculateExercises = (
+  exerciseArr: number[],
+  target: number
+): result => {
   let avghrs =
     exerciseArr.reduce((acc, curr) => acc + curr) / exerciseArr.length;
   const returnRes = {
