@@ -16,7 +16,7 @@ const argsParse = (args: Array<string>): Details => {
   }
 };
 
-const calculateBmi = (mass: number, height: number): string => {
+export const calculateBmi = (mass: number, height: number): string => {
   const bmi = (mass * 100 * 100) / (height * height);
   let result = '';
   if (bmi < 20) {
@@ -28,7 +28,7 @@ const calculateBmi = (mass: number, height: number): string => {
   }
   console.log(bmi);
 
-  return `${result} (${mass}, ${height})`;
+  return `${result}`;
 };
 
 try {
