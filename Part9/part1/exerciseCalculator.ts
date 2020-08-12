@@ -8,6 +8,30 @@ interface result {
   average: number;
 }
 
+interface argsRes {
+  arg1: number[];
+  arg2: number;
+}
+
+const argsParse2 = (args: Array<string>): argsRes => {
+  if (args.length < 12) throw new Error('Not enough arguments');
+  if (args.length > 12) throw new Error('Too much args');
+  const values = args.slice(2);
+  const filteredVal = values.map((val) => {
+    if (isNaN(Number(val))) {
+      throw new Error('Provided values is not number');
+    }
+    return Number(val);
+  });
+
+  console.log(filteredVal);
+
+  return {
+    arg1: filteredVal.slice(1),
+    arg2: filteredVal[0],
+  };
+};
+
 const calculateExercises = (exerciseArr: number[], target: number) => {
   let avghrs =
     exerciseArr.reduce((acc, curr) => acc + curr) / exerciseArr.length;
@@ -23,4 +47,9 @@ const calculateExercises = (exerciseArr: number[], target: number) => {
   return returnRes;
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const { arg1, arg2 } = argsParse2(process.argv);
+  console.log(calculateExercises(arg1, arg2));
+} catch (e) {
+  console.log('Error, something,message:', e.message);
+}
