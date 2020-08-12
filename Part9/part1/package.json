@@ -2,16 +2,24 @@
   "name": "part1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node": "ts-node",
     "bmi": "ts-node bmiCalculator.ts",
-    "exer": "ts-node exerciseCalculator.ts"
+    "exer": "ts-node exerciseCalculator.ts",
+    "dev": "ts-node-dev index.ts",
+    "start": "ts-node index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^14.0.27"
+    "@types/node": "^14.0.27",
+    "express": "^4.17.1",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.7",
+    "ts-node-dev": "^1.0.0-pre.56"
   }
 }
